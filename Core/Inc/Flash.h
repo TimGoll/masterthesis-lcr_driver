@@ -60,11 +60,6 @@ HAL_StatusTypeDef Flash_WriteFlashWord(uint32_t startingAddress, uint32_t *pData
  */
 void Flash_SafeWriteFlashWord(uint32_t startingAddress, uint32_t *pData);
 
-/*
- * @brief  A handled that is repeatedly called that handles writing data to the flash.
- */
-void Flash_HandleData();
-
 uint8_t Flash_ReadByte(uint32_t startingAddress);
 uint16_t Flash_ReadHalfWord(uint32_t startingAddress);
 uint32_t Flash_ReadWord(uint32_t startingAddress);

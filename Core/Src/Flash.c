@@ -42,27 +42,6 @@ void Flash_SafeWriteFlashWord(uint32_t startingAddress, uint32_t *pData) {
 	flashCounter++;
 }
 
-void Flash_HandleData() {
-	// only do anything if there is something in cache
-	if (flashCounter == 0) {
-		return;
-	}
-
-	// do nothing if the flash is still busy
-	if (Flash_WriteFlashWord(flashCache[0].address, flashCache[0].pData) != HAL_OK) {
-		return;
-	}
-
-	// if writing to the cache was successful, the whole cache is shifted by one
-	for (uint8_t i = 1; i < flashCounter; i++) {
-		flashCache[i - 1].address = flashCache[i].address;
-		flashCache[i - 1].pData = flashCache[i].pData;
-	}
-
-	flashCounter--;
-}
-
-
 uint8_t Flash_ReadByte(uint32_t startingAddress) {
 	return * (__IO uint8_t *) startingAddress;
 }
@@ -90,4 +69,31 @@ uint8_t __Flash_GetSector(uint32_t address) {
 	}
 
 	return address / 0x00020000;
+}
+
+// CALLBACKS
+
+void HAL_FLASH_EndOfOperationCallback(uint32_t returnValue) {
+	// only do anything if there is something in cache
+	if (flashCounter == 0) {
+		return;
+	}
+
+	// try to write new flash word to flash
+	if (Flash_WriteFlashWord(flashCache[0].address, flashCache[0].pData) != HAL_OK) {
+		return;
+	}
+
+	// if operation was a flash clear, the cache should not be shifted
+	if (returnValue == 0xFFFFFFFF) {
+		return;
+	}
+
+	// if writing to the cache was successful, the whole cache is shifted by one
+	for (uint8_t i = 1; i < flashCounter; i++) {
+		flashCache[i - 1].address = flashCache[i].address;
+		flashCache[i - 1].pData = flashCache[i].pData;
+	}
+
+	flashCounter--;
 }

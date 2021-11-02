@@ -77,13 +77,6 @@ const osThreadAttr_t handleAnalogDat_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-/* Definitions for handleFlash */
-osThreadId_t handleFlashHandle;
-const osThreadAttr_t handleFlash_attributes = {
-  .name = "handleFlash",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
 /* USER CODE BEGIN PV */
 
 // define struct for external DAC
@@ -130,24 +123,6 @@ void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac) {
 	HAL_UART_Transmit(&huart3, (uint8_t *) usb_buf, usb_buf_len, HAL_MAX_DELAY);
 }
 
-
-
-
-
-void HAL_FLASH_EndOfOperationCallback(uint32_t ReturnValue) {
-	if (ReturnValue == 0xFFFFFFFF) {
-		char usb_buf[64];
-		uint16_t usb_buf_len = snprintf(usb_buf, 64, "Clearing Contents from flash.\r\n");
-		HAL_UART_Transmit(&huart3, (uint8_t *) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-
-		return;
-	}
-
-	char usb_buf[64];
-	uint16_t usb_buf_len = snprintf(usb_buf, 64, "Reading two Bytes from Flash: 0x%04X.\r\n", Flash_ReadHalfWord(ReturnValue));
-	HAL_UART_Transmit(&huart3, (uint8_t *) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-}
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -165,7 +140,6 @@ static void MX_TIM6_Init(void);
 void StartExternalDACs(void *argument);
 void StartHandleLCRSlave(void *argument);
 void StartHandleAnalogData(void *argument);
-void StartHandleFlash(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -218,9 +192,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   // set initial values first
-  LCR_Data_SetInitialDevID(0xAB);
-  LCR_Data_SetInitialMemsID(0x61);
-  LCR_Data_SetInitialPartID(0xFF);
+  LCR_Data_SetInitialDevID(0xBA);
+  LCR_Data_SetInitialMemsID(0x65);
+  LCR_Data_SetInitialPartID(0xEF);
   LCR_Data_SetInitialMeasurementFrequency(10000); // 10kHz
 
   // Set this to true so that initializing the data always sets it to true
@@ -230,6 +204,8 @@ int main(void)
 
   // then initialize the memory
   LCR_Data_Initialize();
+
+  LCR_Data_Store();
 
   /* USER CODE END 2 */
 
@@ -261,9 +237,6 @@ int main(void)
 
   /* creation of handleAnalogDat */
   handleAnalogDatHandle = osThreadNew(StartHandleAnalogData, NULL, &handleAnalogDat_attributes);
-
-  /* creation of handleFlash */
-  handleFlashHandle = osThreadNew(StartHandleFlash, NULL, &handleFlash_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -880,28 +853,6 @@ void StartHandleAnalogData(void *argument)
     osDelay(100);
   }
   /* USER CODE END StartHandleAnalogData */
-}
-
-/* USER CODE BEGIN Header_StartHandleFlash */
-/**
-* @brief Function implementing the handleFlash thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartHandleFlash */
-void StartHandleFlash(void *argument)
-{
-  /* USER CODE BEGIN StartHandleFlash */
-  char usb_buf[64];
-  uint16_t usb_buf_len = snprintf(usb_buf, 64, "Setting up flash // each bank has %d sectors.\r\n", FLASH_SECTOR_TOTAL);
-  HAL_UART_Transmit(&huart3, (uint8_t *) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-
-  for(;;)
-  {
-	Flash_HandleData();
-    osDelay(10);
-  }
-  /* USER CODE END StartHandleFlash */
 }
 
 /**
