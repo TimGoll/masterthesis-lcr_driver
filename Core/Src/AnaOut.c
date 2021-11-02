@@ -13,9 +13,7 @@ void AnaOut_Initialize(AnaOut *dev, TIM_HandleTypeDef *tmr, DAC_HandleTypeDef *h
 
 	__AnaOut_SetupSine(dev->buffer);
 
-	HAL_DAC_Start(hdac, DAC_CHANNEL_1);
 	HAL_DAC_Start_DMA(hdac, DAC_CHANNEL_1, (uint32_t *) dev->buffer, dev->size, DAC_ALIGN_12B_R);
-
 	HAL_TIM_Base_Start(tmr);
 }
 

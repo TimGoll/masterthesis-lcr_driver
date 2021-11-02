@@ -75,14 +75,14 @@ osThreadId_t handleAnalogDatHandle;
 const osThreadAttr_t handleAnalogDat_attributes = {
   .name = "handleAnalogDat",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityLow1,
 };
 /* Definitions for handleFlash */
 osThreadId_t handleFlashHandle;
 const osThreadAttr_t handleFlash_attributes = {
   .name = "handleFlash",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityLow2,
 };
 /* USER CODE BEGIN PV */
 
