@@ -3,7 +3,7 @@
 Flash_CacheElement flashCache[32];
 uint8_t flashCounter = 0;
 
-HAL_StatusTypeDef FlashClearSector(uint32_t startingAddress, uint8_t amount) {
+HAL_StatusTypeDef Flash_ClearSector(uint32_t startingAddress, uint8_t amount) {
 	FLASH_EraseInitTypeDef eraseInit;
 
 	eraseInit.TypeErase = FLASH_TYPEERASE_SECTORS;

@@ -1,15 +1,17 @@
-/*
- * LCR_Data.h
- *
- * LCR Data is the core system of the project. It consists of 128 bytes of storage
- * that can be accessed via helper functions and should contain the measurement
- * data as well as configuration parameters.
- * This addressable data array is also exposed to the outside through an I2C interface.
- *
- *
- * Created on: 29.09.2021
- * Author: Tim Goll
- */
+/**
+  ******************************************************************************
+  * @file           LCR_Data.h
+  * @author         Tim Goll
+  * @date           29.09.2021
+  * @brief          Handles the core data of the LCR meter that can be accessed from the outside.
+  ******************************************************************************
+  * LCR Data is the core system of the project. It consists of 128 bytes of storage
+  * that can be accessed via helper functions and should contain the measurement
+  * data as well as configuration parameters.
+  * This addressable data array is also exposed to the outside through an I2C interface.
+  *
+  ******************************************************************************
+  */
 
 #ifndef INC_LCR_DATA_H
 #define INC_LCR_DATA_H
@@ -23,32 +25,40 @@
 #define LCR_DATA_SIZE 256
 
 // define addresses
-#define LCR_DATA_REG_INITIALIZED 0 // 1 byte
-#define LCR_DATA_REG_DEVID 1 // 1 byte
-#define LCR_DATA_REG_MEMSID 2 // 1 byte
-#define LCR_DATA_REG_PARTID 3 // 1 byte
-#define LCR_DATA_REG_MEM_ADDRESS 4 // 1 byte
-#define LCR_DATA_REG_MEM_ADDRESS_START 5 // 1 byte
-#define LCR_DATA_REG_RESISTANCE 6 // 4 bytes
-#define LCR_DATA_REG_CAPACITANCE 10 // 4 bytes
-#define LCR_DATA_REG_MES_VOLT_MIN 14 // 2 bytes
-#define LCR_DATA_REG_MES_VOLT_MAX 16 // 2 bytes
-#define LCR_DATA_REG_MES_FREQ 18 // 2 bytes
+#define LCR_DATA_REG_INITIALIZED 0 ///< size: 1 byte
+#define LCR_DATA_REG_DEVID 1 ///< size: 1 byte
+#define LCR_DATA_REG_MEMSID 2 ///< size: 1 byte
+#define LCR_DATA_REG_PARTID 3 ///< size: 1 byte
+#define LCR_DATA_REG_MEM_ADDRESS 4 ///< size: 1 byte
+#define LCR_DATA_REG_MEM_ADDRESS_START 5 ///< size: 1 byte
+#define LCR_DATA_REG_RESISTANCE 6 ///< size: 4 bytes
+#define LCR_DATA_REG_CAPACITANCE 10 ///< size: 4 bytes
+#define LCR_DATA_REG_MES_VOLT_MIN 14 ///< size: 2 bytes
+#define LCR_DATA_REG_MES_VOLT_MAX 16 ///< size: 2 bytes
+#define LCR_DATA_REG_MES_FREQ 18 ///< size: 2 bytes
 
-#define LCR_DATA_REG_COMMAND LCR_DATA_SIZE - 5 // 1 byte command followed by 4 bytes of data
+#define LCR_DATA_REG_COMMAND LCR_DATA_SIZE - 5 ///< size: 1 byte command followed by 4 bytes of data
 
+/**
+ * @brief An enum that handles the register type.
+ *
+ * The system consists of two parallel registers. One for the current data, one for the initial data.
+ */
 typedef enum {
-	LCR_DATA_REG_DATA = 0x00,
-	LCR_DATA_REG_INITIAL = 0x01
+	LCR_DATA_REG_DATA = 0x00, ///< The register that contains the live data
+	LCR_DATA_REG_INITIAL = 0x01 ///< The register that contains the initial data, it is unchanged on runtime
 } LCR_Data_RegisterTypeDef;
 
+/**
+ * @brief An enum that contains all available commands that can be issued inside the command register.
+ */
 typedef enum {
-	LCR_DATA_RESET = 0x01,
-	LCR_DATA_STORE = 0x02
+	LCR_DATA_RESET = 0x01, ///< resets the live data register to the initial data register
+	LCR_DATA_STORE = 0x02 ///< stores the live data register to the flash memory
 } LCR_Data_CommandTypeDef;
 
-extern uint8_t data[LCR_DATA_SIZE];
-extern uint8_t initial[LCR_DATA_SIZE];
+extern uint8_t data[LCR_DATA_SIZE]; ///< the live data
+extern uint8_t initial[LCR_DATA_SIZE]; ///< the initial data
 
 void LCR_Data_Initialize();
 void LCR_Data_Reset();

@@ -6,7 +6,7 @@
     <WorkspacePath>C:\Users\Tim\STM32CubeIDE\workspace_1.7.0\lcr_driver\</WorkspacePath>
     <underRoot>true</underRoot>
     <TrustZone>0</TrustZone>
-    <HAL_Driver>C:\Users\Tim\STM32Cube\Repository\STM32Cube_FW_H7_V1.9.0</HAL_Driver>
+    <HAL_Driver>C:\Users\Tim\STM32Cube\Repository\STM32Cube_FW_H7_V1.10.0</HAL_Driver>
     <CMSIS>Drivers/CMSIS</CMSIS>
     <Toolchain>STM32CubeIDE</Toolchain>
     <IocFile>lcr_driver.ioc</IocFile>
@@ -34,7 +34,7 @@
             <memory access="xrw" name="ITCMRAM" size="64" start="0x00000000" />
             <memory access="rx" name="FLASH" size="2048" start="0x8000000" />
           </memories>
-          <startup>C:\Users\Tim\STM32Cube\Repository\STM32Cube_FW_H7_V1.9.0\Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\gcc\startup_stm32h743xx.s</startup>
+          <startup>C:\Users\Tim\STM32Cube\Repository\STM32Cube_FW_H7_V1.10.0\Drivers\CMSIS\Device\ST\STM32H7xx\Source\Templates\gcc\startup_stm32h743xx.s</startup>
           <LinkSettings>
             <LinkAdditionalLibs />
           </LinkSettings>

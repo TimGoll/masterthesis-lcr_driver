@@ -1,17 +1,27 @@
-/*
- * MCP4725.h
- *
- *  Created on: 23.09.2021
- *      Author: Tim Goll
- */
+/**
+  ******************************************************************************
+  * @file           MCP4725.h
+  * @author         Tim Goll
+  * @date           23.09.2021
+  * @brief          Handles the communication with the external DACs.
+  ******************************************************************************
+  * Since the MCU has limited ports, those analog outputs that have no time
+  * sensitivity are handled via external DACs. Those have to be interfaced which is
+  * done via this library.
+  *
+  ******************************************************************************
+  */
 
 #ifndef INC_MCP4725_H
 #define INC_MCP4725_H
 
 #include "stm32h7xx_hal.h" // Needed for I2C
 
-#define MCP4725_MAX_VOLTAGE 3.3f
+#define MCP4725_MAX_VOLTAGE 3.3f ///< The maximum voltage that can be outputted by the DAC that is used to calculate the transmitted value.
 
+/**
+ * @brief An enum containing the different modes for the output resistance.
+ */
 typedef enum {
 	MCP4725_MODE_NORMAL = 0b00000000,
 	MCP4725_MODE_1k = 0b01000000,
@@ -19,39 +29,92 @@ typedef enum {
 	MCP4725_MODE_500k = 0b11000000
 } MCP4725_ModeTypeDef;
 
+/**
+ * @brief An enum specifying if the eeprom should be used.
+ */
 typedef enum {
 	MCP4725_DAC_AND_EEPROM = 0,
 	MCP4725_DAC_ONLY = 1
 } MCP4725_DataModeTypeDef;
 
-// SENSOR STRUCT
+/**
+ * @brief A struct that has all sensor specific data.
+ */
 typedef struct {
-	/* I2C handle */
-	I2C_HandleTypeDef *i2cHandle;
+	I2C_HandleTypeDef *i2cHandle; ///< I2C handle
 
-	/* Store the state of the i2c state here */
-	HAL_StatusTypeDef i2cState;
+	HAL_StatusTypeDef i2cState; ///< Store the state of the i2c state here
 
-	/* the address of the specific i2c device */
-	uint16_t address;
+	uint16_t address; ///< The address of the specific i2c device
 
-	/* the current shutdown mode */
-	MCP4725_ModeTypeDef mode;
+	MCP4725_ModeTypeDef mode; ///< The current shutdown mode
 
-	/* the output voltage in volt */
-	float output_voltage;
+	float output_voltage; ///< The output voltage in volt
 
-	/* the output voltage as an integer */
-	uint16_t output_voltage_int;
+	uint16_t output_voltage_int; ///< The output voltage as an integer
 } MCP4725;
 
+/**
+ * Initializes one external DAC. The set data is then added to the sensor data struct.
+ *
+ * @param [in] *dev The sensor data struct that contains everything regarding the specific sensor instance
+ * @param [in] *i2cHandle The handler to the i2c port which is connected to the external DAC
+ * @param [in] address The 7-bit i2c address
+ *
+ * @retval HAL_StatusTypeDef HAL Status
+ */
 HAL_StatusTypeDef MCP4725_Initialize(MCP4725 *dev, I2C_HandleTypeDef *i2cHandle, uint16_t address);
 
+/**
+ * Changes the output mode of the external DAC. Normally this should be kept to the default value.
+ *
+ * @param [in] *dev The sensor data struct that contains everything regarding the specific sensor instance
+ * @param [in] mode The DAC output mode that should be set
+ * @param [in] eeprom_or_dac Defines if the eeprom of the DAC should be used
+ *
+ * @retval HAL_StatusTypeDef HAL Status
+ */
 HAL_StatusTypeDef MCP4725_SetMode(MCP4725 *dev, MCP4725_ModeTypeDef mode, MCP4725_DataModeTypeDef eeprom_or_dac);
+
+/**
+ * Sets the voltage of the external DAC.
+ *
+ * @param [in] *dev The sensor data struct that contains everything regarding the specific sensor instance
+ * @param [in] voltage The new voltage that should be set; it is capped at the max value
+ * @param [in] eeprom_or_dac Defines if the eeprom of the DAC should be used
+ *
+ * @retval HAL_StatusTypeDef HAL Status
+ */
 HAL_StatusTypeDef MCP4725_SetVoltage(MCP4725 *dev, float voltage, MCP4725_DataModeTypeDef eeprom_or_dac);
+
+/**
+ * Reads the current data from the chip and updates the sensor data object.
+ *
+ * @param [out] *dev The sensor data struct that contains everything regarding the specific sensor instance
+ *
+ * @retval HAL_StatusTypeDef HAL Status
+ */
 HAL_StatusTypeDef MCP4725_GetDataFromChip(MCP4725 *dev);
 
+/**
+ * A helper function that streamlines reading data from the external DAC.
+ *
+ * @param [in] *dev The sensor data struct that contains everything regarding the specific sensor instance
+ * @param [out] *data The buffer array that is used to receive the data
+ * @param [in] length The amount of bytes that should be read
+ *
+ * @retval HAL_StatusTypeDef HAL Status
+ */
 HAL_StatusTypeDef MCP4725_ReadData(MCP4725 *dev, uint8_t *data, uint8_t length);
+
+/**
+ * A helper function that streamlines reading writing to the external DAC. It writes the data that is contained within the sensor data struct.
+ *
+ * @param [in] *dev The sensor data struct that contains everything regarding the specific sensor instance
+ * @param [in] eeprom_or_dac Defines if the eeprom of the DAC should be used
+ *
+ * @retval HAL_StatusTypeDef HAL Status
+ */
 HAL_StatusTypeDef MCP4725_WriteData(MCP4725 *dev, MCP4725_DataModeTypeDef eeprom_or_dac);
 
 #endif /* INC_MCP4725_H */

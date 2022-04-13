@@ -31,7 +31,7 @@ void LCR_Data_Reset() {
 }
 
 void LCR_Data_Store() {
-	FlashClearSector(LCR_DATA_FLASH_ADDRESS, 1);
+	Flash_ClearSector(LCR_DATA_FLASH_ADDRESS, 1);
 
 	// one flash word has the size of 256 bits, we have a memory size of 256 bytes here
 	// this means that our memory has to be divided into 8 flash words
