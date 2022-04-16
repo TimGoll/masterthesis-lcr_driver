@@ -9,3 +9,5 @@ Middlewares/**
 
 *.launch
 *.ld
+
+**/.pseudogit/**
