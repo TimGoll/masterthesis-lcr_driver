@@ -1,10 +1,3 @@
-/*
- * LCR_Data.c
- *
- *  Created on: 29.09.2021
- *      Author: Tim Goll
- */
-
 #include "LCR_Data.h"
 
 uint8_t data[LCR_DATA_SIZE] = {0};

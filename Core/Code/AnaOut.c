@@ -1,11 +1,11 @@
-/*
- * AnaOut.c
- *
- *  Created on: Oct 18, 2021
- *      Author: Tim
- */
-
 #include "AnaOut.h"
+
+// define struct for analog output
+AnaOut_t anaOut;
+
+void Display_StartThread(void *argument) {
+	AnaOut_Parameter_t *params = (AnaOut_Parameter_t *) argument;
+}
 
 void AnaOut_Initialize(AnaOut *dev, TIM_HandleTypeDef *tmr, DAC_HandleTypeDef *hdac) {
 	dev->hdac = hdac;

@@ -39,6 +39,8 @@ extern "C" {
 #include "AnaOut.h"
 #include "Flash.h"
 
+#include "../Code/Display.h"
+
 #include <stdio.h>
 #include <string.h>
 

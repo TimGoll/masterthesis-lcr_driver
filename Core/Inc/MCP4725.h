@@ -42,15 +42,10 @@ typedef enum {
  */
 typedef struct {
 	I2C_HandleTypeDef *i2cHandle; ///< I2C handle
-
 	HAL_StatusTypeDef i2cState; ///< Store the state of the i2c state here
-
 	uint16_t address; ///< The address of the specific i2c device
-
 	MCP4725_ModeTypeDef mode; ///< The current shutdown mode
-
 	float output_voltage; ///< The output voltage in volt
-
 	uint16_t output_voltage_int; ///< The output voltage as an integer
 } MCP4725;
 
