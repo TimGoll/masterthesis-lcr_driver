@@ -16,13 +16,15 @@
 #ifndef INC_SINEGEN_H
 #define INC_SINEGEN_H
 
-#include "math.h"
+#include "../config.h"
+
+#include <stdlib.h>
+#include <math.h>
 
 #include "cmsis_os.h"
 #include "stm32h7xx_hal.h"
 
-#define ANAOUT_BUFFER_SIZE 128 ///< The fixed buffer size for the buffer that is outputted via DMA.
-#define PI 3.1415926
+#define PI 3.14159265358979323846
 
 /**
  * @brief The analog output structure.
@@ -31,27 +33,37 @@
  * An instance of this structure is passed with every function call in this scope.
  */
 typedef struct {
-	DAC_HandleTypeDef *hdac; ///< The handler to the internal DAC.
-	uint16_t size; ///< The size of the buffer that is repeatedly outputted via DMA.
-	uint16_t buffer[ANAOUT_BUFFER_SIZE]; ///< The buffer that is outputted.
+	DAC_HandleTypeDef *hdac; ///< The handler to the internal DAC
+	uint16_t *buffer; ///< The buffer that is outputted
+	uint16_t buffer_size; ///< The size of the buffer that is repeatedly outputted via DMA
+	uint32_t dac_channel; ///< The channel of the DAC
 } SineGen_t;
 
 /**
  * Initializes the analog output. Also sets up the DMA channel and pushes the then created output buffer to the DMA module.
  *
- * @param [in] *dev The analog output structure.
- * @param [in] *tmr The pointer to the timer that should be associated with the DMA channel.
- * @param [in] *hdac The pointer to the DMA channel.
+ * @param [in] *dev The analog output structure
+ * @param [in] *tmr The pointer to the timer that should be associated with the DMA channel
+ * @param [in] *hdac The pointer to the DMA channel
+ * @param [in] dac_channel The channel of the DAC
  */
-void SineGen_Initialize(SineGen_t *dev, TIM_HandleTypeDef *tmr, DAC_HandleTypeDef *hdac);
+void SineGen_Initialize(SineGen_t *dev, TIM_HandleTypeDef *tmr, DAC_HandleTypeDef *hdac, uint32_t dac_channel);
 
 /**
  * A helper function that sets up a sine wave in a predefined buffer that is pushed via DMA to a DAC.
  *
- * @intfunction
- *
- * @param  [out] *buffer The buffer that should be filled.
+ * @param [in] *dev The analog output structure
+ * @param [in] min The minimum voltage of the signal
+ * @param [in] max The maximum voltage of the signal
+ * @param [in] frequency The signal frequency in Hz
  */
-void __SineGen_SetupSine(uint16_t *buffer);
+void SineGen_SetupSine(SineGen_t *dev, uint16_t min, uint16_t max, uint16_t frequency);
+
+/**
+ * Push the generated output to the DAC so that it will be outputted.
+ *
+ * @param [in] *dev The analog output structure
+ */
+void SineGen_OutputSine(SineGen_t *dev);
 
 #endif /* INC_SINEGEN_H */

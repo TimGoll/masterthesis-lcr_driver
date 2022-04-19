@@ -8,6 +8,8 @@ void MainThread_StartThread(void *argument) {
 	LCRData_SetInitialDevID(0xAB);
 	LCRData_SetInitialMemsID(0x61);
 	LCRData_SetInitialPartID(0xFF);
+	LCRData_SetInitialMinMeasurementVoltage(410); // 0.1V
+	LCRData_SetInitialMaxMeasurementVoltage(3970); // 3.2V
 	LCRData_SetInitialMeasurementFrequency(10000); // 10kHz
 
 	// Set this to true so that initializing the data always sets it to true
@@ -17,6 +19,9 @@ void MainThread_StartThread(void *argument) {
 
 	// then initialize the memory
 	LCRData_Initialize();
+
+	// TODO remove this again, only for debugging to ignore flash
+	LCRData_Reset();
 
 	// set up LCR slave
 	I2CSlave_Initialize(&i2cSlave, (I2C_HandleTypeDef *) argument, GPIOB, GPIO_PIN_7);
