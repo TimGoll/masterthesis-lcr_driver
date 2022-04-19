@@ -1,6 +1,5 @@
 Debug/**
-Drivers/**
-Middlewares/**
+
 .settings/**
 
 .cproject
