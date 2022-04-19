@@ -3,6 +3,6 @@
 
 #include "../Libs/SSD1306/SSD1306.h"
 
-#include "LCR_Data.h"
+#include "../Logic/LCRData.h"
 
 void Display_StartThread(void *argument);

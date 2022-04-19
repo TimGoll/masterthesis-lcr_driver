@@ -56,113 +56,46 @@ TIM_HandleTypeDef htim6;
 
 UART_HandleTypeDef huart3;
 
-/* Definitions for setExternalDACs */
-osThreadId_t setExternalDACsHandle;
-const osThreadAttr_t setExternalDACs_attributes = {
-  .name = "setExternalDACs",
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal1,
-};
-/* Definitions for handleLCRSlave */
-osThreadId_t handleLCRSlaveHandle;
-const osThreadAttr_t handleLCRSlave_attributes = {
-  .name = "handleLCRSlave",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal2,
-};
-/* Definitions for handleAnalogDat */
-osThreadId_t handleAnalogDatHandle;
-const osThreadAttr_t handleAnalogDat_attributes = {
-  .name = "handleAnalogDat",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityAboveNormal1,
-};
-/* Definitions for handleFlash */
-osThreadId_t handleFlashHandle;
-const osThreadAttr_t handleFlash_attributes = {
-  .name = "handleFlash",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal4,
+  .priority = (osPriority_t) osPriorityLow1,
 };
 /* Definitions for oledDisplay */
 osThreadId_t oledDisplayHandle;
 const osThreadAttr_t oledDisplay_attributes = {
   .name = "oledDisplay",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow1,
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal1,
 };
-/* Definitions for sineGen */
-osThreadId_t sineGenHandle;
-const osThreadAttr_t sineGen_attributes = {
-  .name = "sineGen",
+/* Definitions for analogOut */
+osThreadId_t analogOutHandle;
+const osThreadAttr_t analogOut_attributes = {
+  .name = "analogOut",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityHigh1,
 };
+/* Definitions for mainThread */
+osThreadId_t mainThreadHandle;
+const osThreadAttr_t mainThread_attributes = {
+  .name = "mainThread",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal1,
+};
+/* Definitions for analogIn */
+osThreadId_t analogInHandle;
+const osThreadAttr_t analogIn_attributes = {
+  .name = "analogIn",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityHigh2,
+};
 /* USER CODE BEGIN PV */
 
-// AnaOut needs two parameters, therefore we pass a reference to a struct
-AnaOut_Parameter_t ana_out_param = {&htim6, &hdac1};;
-
-
-
-// define struct for external DAC
-MCP4725 extDAC1;
-
-// define struct for LCR slave handler
-LCR_Slave lcrSlave1;
-
-// define struct for analog data handling
-AnaRP anaData1;
-
-void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc) {
-	// called when conversion is half finished
-	//char usb_buf[128];
-
-	//uint16_t usb_buf_len = snprintf(usb_buf, 128, "ADC - SysTick (Half Complete): %lu\r\n", HAL_GetTick());
-	//HAL_UART_Transmit(&huart3, (uint8_t *) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-}
-
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
-	// called when conversion is fully finished
-	//char usb_buf[128];
-
-	//uint16_t usb_buf_len = snprintf(usb_buf, 128, "ADC - SysTick (Complete): %lu\r\n", HAL_GetTick());
-	//HAL_UART_Transmit(&huart3, (uint8_t *) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-}
-
-void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac) {
-	// called when conversion is fully finished
-	//char usb_buf[128];
-
-	//uint16_t usb_buf_len = snprintf(usb_buf, 128, "DAC - SysTick (Half Complete): %lu\r\n", HAL_GetTick());
-	//HAL_UART_Transmit(&huart3, (uint8_t *) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-}
-
-void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac) {
-	// called when conversion is fully finished
-	//char usb_buf[128];
-
-	//uint16_t usb_buf_len = snprintf(usb_buf, 128, "DAC - SysTick (Complete): %lu\r\n", HAL_GetTick());
-	//HAL_UART_Transmit(&huart3, (uint8_t *) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-}
-
-void HAL_FLASH_EndOfOperationCallback(uint32_t ReturnValue) {
-	if (ReturnValue == 0xFFFFFFFF) {
-		char usb_buf[64];
-		uint16_t usb_buf_len = snprintf(usb_buf, 64,
-				"Clearing Contents from flash.\r\n");
-		HAL_UART_Transmit(&huart3, (uint8_t*) usb_buf, usb_buf_len,
-				HAL_MAX_DELAY);
-
-		return;
-	}
-
-	char usb_buf[64];
-	uint16_t usb_buf_len = snprintf(usb_buf, 64,
-			"Reading two Bytes from Flash: 0x%04X.\r\n",
-			Flash_ReadHalfWord(ReturnValue));
-	HAL_UART_Transmit(&huart3, (uint8_t*) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-}
+// these threads need multiple parameters, therefore we pass a reference to a struct
+AnalogOut_Parameter_t analog_out_params = {&htim6, &hdac1, &hi2c1};
+AnalogIn_Parameter_t analog_in_params = {&hadc1, &hadc1, &hadc1};
 
 /* USER CODE END PV */
 
@@ -178,12 +111,11 @@ static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
 static void MX_ADC2_Init(void);
 static void MX_ADC3_Init(void);
-void StartExternalDACs(void *argument);
-void StartHandleLCRSlave(void *argument);
-void StartHandleAnalogData(void *argument);
-void StartHandleFlash(void *argument);
+void StartDefaultTask(void *argument);
 extern void Display_StartThread(void *argument);
-extern void AnaOut_StartThread(void *argument);
+extern void AnalogOut_StartThread(void *argument);
+extern void MainThread_StartThread(void *argument);
+extern void AnalogIn_StartThread(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -233,66 +165,49 @@ int main(void)
   MX_ADC3_Init();
   /* USER CODE BEGIN 2 */
 
-	// set initial values first
-	LCR_Data_SetInitialDevID(0xAB);
-	LCR_Data_SetInitialMemsID(0x61);
-	LCR_Data_SetInitialPartID(0xFF);
-	LCR_Data_SetInitialMeasurementFrequency(10000); // 10kHz
-
-	// Set this to true so that initializing the data always sets it to true
-	// in the data array. This is only used to detect if the storage in the
-	// flash was initialized.
-	LCR_Data_SetInitialInitialized(1);
-
-	// then initialize the memory
-	LCR_Data_Initialize();
-
   /* USER CODE END 2 */
 
   /* Init scheduler */
   osKernelInitialize();
 
   /* USER CODE BEGIN RTOS_MUTEX */
-	/* add mutexes, ... */
+  /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
-	/* add semaphores, ... */
+  /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
-	/* start timers, add new ones, ... */
+  /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-	/* add queues, ... */
+  /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of setExternalDACs */
-  setExternalDACsHandle = osThreadNew(StartExternalDACs, NULL, &setExternalDACs_attributes);
-
-  /* creation of handleLCRSlave */
-  handleLCRSlaveHandle = osThreadNew(StartHandleLCRSlave, NULL, &handleLCRSlave_attributes);
-
-  /* creation of handleAnalogDat */
-  handleAnalogDatHandle = osThreadNew(StartHandleAnalogData, NULL, &handleAnalogDat_attributes);
-
-  /* creation of handleFlash */
-  handleFlashHandle = osThreadNew(StartHandleFlash, NULL, &handleFlash_attributes);
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of oledDisplay */
   oledDisplayHandle = osThreadNew(Display_StartThread, (void*) &hi2c1, &oledDisplay_attributes);
 
-  /* creation of sineGen */
-  sineGenHandle = osThreadNew(AnaOut_StartThread, (void*) &ana_out_param, &sineGen_attributes);
+  /* creation of analogOut */
+  analogOutHandle = osThreadNew(AnalogOut_StartThread, (void*) &analog_out_params, &analogOut_attributes);
+
+  /* creation of mainThread */
+  mainThreadHandle = osThreadNew(MainThread_StartThread, (void*) &hi2c2, &mainThread_attributes);
+
+  /* creation of analogIn */
+  analogInHandle = osThreadNew(AnalogIn_StartThread, (void*) &analog_in_params, &analogIn_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-	/* add threads, ... */
+  /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
-	/* add events, ... */
+  /* add events, ... */
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
@@ -301,11 +216,11 @@ int main(void)
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	while (1) {
+  while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	}
+  }
   /* USER CODE END 3 */
 }
 
@@ -863,129 +778,22 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartExternalDACs */
+/* USER CODE BEGIN Header_StartDefaultTask */
 /**
- * @brief  Function implementing the setExternalDACs thread.
- * @param  argument: Not used
- * @retval None
- */
-/* USER CODE END Header_StartExternalDACs */
-void StartExternalDACs(void *argument)
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-	char usb_buf[64];
-	uint16_t usb_buf_len = snprintf(usb_buf, 64,
-			"Setting up external DACs.\r\n");
-	HAL_UART_Transmit(&huart3, (uint8_t*) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-
-	MCP4725_Initialize(&extDAC1, &hi2c1, 0x62);
-
-	/* Infinite loop */
-	for (;;) {
-		uint32_t resistance = LCR_Data_GetDEResistance();
-		float voltage = ((float) resistance) / 4294967295.0f * 3.3f;
-
-		MCP4725_SetVoltage(&extDAC1, voltage, MCP4725_DAC_ONLY);
-		osDelay(50);
-	}
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
   /* USER CODE END 5 */
-}
-
-/* USER CODE BEGIN Header_StartHandleLCRSlave */
-/**
- * @brief Function implementing the handleLCRSlave thread.
- * @param argument: Not used
- * @retval None
- */
-/* USER CODE END Header_StartHandleLCRSlave */
-void StartHandleLCRSlave(void *argument)
-{
-  /* USER CODE BEGIN StartHandleLCRSlave */
-	char usb_buf[64];
-	uint16_t usb_buf_len = snprintf(usb_buf, 64,
-			"Setting up LCR slave mode @I2C: 0x%02X.\r\n",
-			(uint16_t) hi2c2.Init.OwnAddress1 >> 1);
-	HAL_UART_Transmit(&huart3, (uint8_t*) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-
-	LCR_Slave_Initialize(&lcrSlave1, &hi2c2, GPIOB, GPIO_PIN_7);
-
-	//LCR_Data_SetDEResistance(0x004499FF);
-	LCR_Data_SetDEResistance(0x00);
-
-	/* Infinite loop */
-	for (;;) {
-		LCR_Data_HandleData();
-
-		LCR_Slave_StateTypeDef state = LCR_Slave_HandleData(&lcrSlave1);
-
-		if (state == LCR_SLAVE_DATA_AVAILABLE) {
-			uint16_t usb_buf_len = snprintf(usb_buf, 64,
-					"received new data reaching from #%u to #%u:\r\n",
-					*lcrSlave1.start_address, (*lcrSlave1.last_address) - 1);
-			HAL_UART_Transmit(&huart3, (uint8_t*) usb_buf, usb_buf_len,
-					HAL_MAX_DELAY);
-
-			for (uint8_t i = *lcrSlave1.start_address;
-					i < *lcrSlave1.last_address; i++) {
-				uint16_t usb_buf_len = snprintf(usb_buf, 64, "#%u: %u\r\n", i,
-						lcrSlave1.memory[i]);
-				HAL_UART_Transmit(&huart3, (uint8_t*) usb_buf, usb_buf_len,
-						HAL_MAX_DELAY);
-			}
-		} else {
-			osDelay(10);
-		}
-	}
-  /* USER CODE END StartHandleLCRSlave */
-}
-
-/* USER CODE BEGIN Header_StartHandleAnalogData */
-/**
- * @brief Function implementing the handleAnalogDat thread.
- * @param argument: Not used
- * @retval None
- */
-/* USER CODE END Header_StartHandleAnalogData */
-void StartHandleAnalogData(void *argument)
-{
-  /* USER CODE BEGIN StartHandleAnalogData */
-	char usb_buf[64];
-	uint16_t usb_buf_len = snprintf(usb_buf, 64,
-			"Setting up analog handlers.\r\n");
-	HAL_UART_Transmit(&huart3, (uint8_t*) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-
-	AnaRP_Initialize(&anaData1, &hadc1);
-	AnaOut_Initialize(&anaOutDta1, &htim6, &hdac1);
-
-	/* Infinite loop */
-	for (;;) {
-		//HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2000);
-		osDelay(100);
-	}
-  /* USER CODE END StartHandleAnalogData */
-}
-
-/* USER CODE BEGIN Header_StartHandleFlash */
-/**
- * @brief Function implementing the handleFlash thread.
- * @param argument: Not used
- * @retval None
- */
-/* USER CODE END Header_StartHandleFlash */
-void StartHandleFlash(void *argument)
-{
-  /* USER CODE BEGIN StartHandleFlash */
-	char usb_buf[64];
-	uint16_t usb_buf_len = snprintf(usb_buf, 64,
-			"Setting up flash // each bank has %d sectors.\r\n",
-			FLASH_SECTOR_TOTAL);
-	HAL_UART_Transmit(&huart3, (uint8_t*) usb_buf, usb_buf_len, HAL_MAX_DELAY);
-
-	for (;;) {
-		Flash_HandleData();
-		osDelay(10);
-	}
-  /* USER CODE END StartHandleFlash */
 }
 
 /**
@@ -1016,10 +824,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-	/* User can add his own implementation to report the HAL error return state */
-	__disable_irq();
-	while (1) {
-	}
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1) {
+  }
   /* USER CODE END Error_Handler_Debug */
 }
 

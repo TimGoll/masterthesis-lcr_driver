@@ -91,3 +91,23 @@ uint8_t __Flash_GetSector(uint32_t address) {
 
 	return address / 0x00020000;
 }
+
+// CALLBACKS
+
+void HAL_FLASH_EndOfOperationCallback(uint32_t ReturnValue) {
+	//if (ReturnValue == 0xFFFFFFFF) {
+	//	char usb_buf[64];
+	//	uint16_t usb_buf_len = snprintf(usb_buf, 64,
+	//			"Clearing Contents from flash.\r\n");
+	//	HAL_UART_Transmit(&huart3, (uint8_t*) usb_buf, usb_buf_len,
+	//			HAL_MAX_DELAY);
+
+	//	return;
+	//}
+
+	//char usb_buf[64];
+	//uint16_t usb_buf_len = snprintf(usb_buf, 64,
+	//		"Reading two Bytes from Flash: 0x%04X.\r\n",
+	//		Flash_ReadHalfWord(ReturnValue));
+	//HAL_UART_Transmit(&huart3, (uint8_t*) usb_buf, usb_buf_len, HAL_MAX_DELAY);
+}

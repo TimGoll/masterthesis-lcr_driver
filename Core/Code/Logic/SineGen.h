@@ -13,19 +13,16 @@
   ******************************************************************************
   */
 
-#ifndef INC_ANAOUT_H
-#define INC_ANAOUT_H
+#ifndef INC_SINEGEN_H
+#define INC_SINEGEN_H
 
 #include "math.h"
+
+#include "cmsis_os.h"
 #include "stm32h7xx_hal.h"
 
 #define ANAOUT_BUFFER_SIZE 128 ///< The fixed buffer size for the buffer that is outputted via DMA.
 #define PI 3.1415926
-
-typedef struct {
-	TIM_HandleTypeDef *tmr;
-	DAC_HandleTypeDef *hdac;
-} AnaOut_Parameter_t;
 
 /**
  * @brief The analog output structure.
@@ -37,7 +34,7 @@ typedef struct {
 	DAC_HandleTypeDef *hdac; ///< The handler to the internal DAC.
 	uint16_t size; ///< The size of the buffer that is repeatedly outputted via DMA.
 	uint16_t buffer[ANAOUT_BUFFER_SIZE]; ///< The buffer that is outputted.
-} AnaOut_t;
+} SineGen_t;
 
 /**
  * Initializes the analog output. Also sets up the DMA channel and pushes the then created output buffer to the DMA module.
@@ -46,7 +43,7 @@ typedef struct {
  * @param [in] *tmr The pointer to the timer that should be associated with the DMA channel.
  * @param [in] *hdac The pointer to the DMA channel.
  */
-void AnaOut_Initialize(AnaOut *dev, TIM_HandleTypeDef *tmr, DAC_HandleTypeDef *hdac);
+void SineGen_Initialize(SineGen_t *dev, TIM_HandleTypeDef *tmr, DAC_HandleTypeDef *hdac);
 
 /**
  * A helper function that sets up a sine wave in a predefined buffer that is pushed via DMA to a DAC.
@@ -55,6 +52,6 @@ void AnaOut_Initialize(AnaOut *dev, TIM_HandleTypeDef *tmr, DAC_HandleTypeDef *h
  *
  * @param  [out] *buffer The buffer that should be filled.
  */
-void __AnaOut_SetupSine(uint16_t *buffer);
+void __SineGen_SetupSine(uint16_t *buffer);
 
-#endif /* INC_ANAOUT_H */
+#endif /* INC_SINEGEN_H */

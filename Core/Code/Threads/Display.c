@@ -5,6 +5,8 @@ SSD1306_t ssd1306;
 
 char buffer[64];
 
+uint8_t i = 0;
+
 void Display_StartThread(void *argument) {
 	// the reference to the I2C instance is passed as a void pointer on creation of the thread
 	// here it is cast back to the correct type
@@ -14,8 +16,10 @@ void Display_StartThread(void *argument) {
 
 	while(1) {
 		SSD1306_Fill(&ssd1306, SSD1306_COLOR_BLACK);
-		SSD1306_DrawLine(&ssd1306, 43, 0, 43, 31, SSD1306_COLOR_WHITE);
-		SSD1306_DrawLine(&ssd1306, 86, 0, 86, 31, SSD1306_COLOR_WHITE);
+		SSD1306_DrawLine(&ssd1306, 43 + i, 0, 43, 31, SSD1306_COLOR_WHITE);
+		SSD1306_DrawLine(&ssd1306, 86 + i, 0, 86, 31, SSD1306_COLOR_WHITE);
+
+		i = (i+1)%32;
 
 		// Sample Frequency
 		sprintf(buffer, "Fs=10015Hz");

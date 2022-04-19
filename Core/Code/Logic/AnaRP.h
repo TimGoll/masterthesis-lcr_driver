@@ -24,7 +24,7 @@ typedef struct {
 	ADC_HandleTypeDef *hadc;
 	uint16_t size;
 	uint16_t buffer[ANARP_BUFFER_SIZE];
-} AnaRP;
+} AnaRP_t;
 
 /**
  * Initializes a analog input data struct. It also sets up the DMA stream.
@@ -32,13 +32,13 @@ typedef struct {
  * @param [in] *dev The analog data struct that contains everything regarding the specific analog data instance
  * @param [in] *hadc The handler of the ADC in use
  */
-void AnaRP_Initialize(AnaRP *dev, ADC_HandleTypeDef *hadc);
+void AnaRP_Initialize(AnaRP_t *dev, ADC_HandleTypeDef *hadc);
 
 /**
  * Handles the data repeatedly. Once half the data buffer is filled, it is processed in this function.
  *
  * @param [in] *dev The analog data struct that contains everything regarding the specific analog data instance
  */
-void AnaRP_HandleData(AnaRP *dev);
+void AnaRP_HandleData(AnaRP_t *dev);
 
 #endif /* INC_ANARP_H */

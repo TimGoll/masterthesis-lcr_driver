@@ -1,24 +1,17 @@
-/*
- * LCR_Slave.c
- *
- *  Created on: 27.09.2021
- *      Author: Tim Goll
- */
+#include "I2CSlave.h"
 
-#include "LCR_Slave.h"
-
-LCR_Slave *__LCRSlaveList[4]; //4 I2C ports available
+I2CSlave_t *__LCRSlaveList[4]; //4 I2C ports available
 uint8_t __LCRSlaveListSize = 0;
 
-void LCR_Slave_Initialize(LCR_Slave *dev, I2C_HandleTypeDef *i2cHandle, GPIO_TypeDef *gpio_bank, uint16_t gpio_pin) {
+void I2CSlave_Initialize(I2CSlave_t *dev, I2C_HandleTypeDef *i2cHandle, GPIO_TypeDef *gpio_bank, uint16_t gpio_pin) {
 	dev->i2cHandle = i2cHandle;
-	dev->start_address = LCR_Data_GetStartingMemoryAddressReference();
-	dev->last_address = LCR_Data_GetMemoryAddressReference();
+	dev->start_address = LCRData_GetStartingMemoryAddressReference();
+	dev->last_address = LCRData_GetMemoryAddressReference();
 	dev->state = LCR_SLAVE_READY;
 	dev->gpio_bank = gpio_bank;
 	dev->gpio_pin = gpio_pin;
 	dev->__found_address = 0;
-	dev->memory = LCR_Data_GetDataArrayReference();
+	dev->memory = LCRData_GetDataArrayReference();
 
 	// add slave to list of slaves
 	__LCRSlaveList[__LCRSlaveListSize] = dev;
@@ -29,7 +22,7 @@ void LCR_Slave_Initialize(LCR_Slave *dev, I2C_HandleTypeDef *i2cHandle, GPIO_Typ
 	HAL_I2C_EnableListen_IT(i2cHandle);
 }
 
-LCR_Slave_StateTypeDef LCR_Slave_HandleData(LCR_Slave *dev) {
+I2CSlave_State_t I2CSlave_HandleData(I2CSlave_t *dev) {
 	// the bus is still busy, check next time
 	if (dev->state == LCR_SLAVE_BUSY) {
 		return LCR_SLAVE_BUSY;
@@ -45,7 +38,7 @@ LCR_Slave_StateTypeDef LCR_Slave_HandleData(LCR_Slave *dev) {
 	return LCR_SLAVE_DATA_AVAILABLE;
 }
 
-uint8_t __LCR_Slave_FindSlave(I2C_HandleTypeDef *i2cHandle, LCR_Slave **lcr_slave) {
+uint8_t __I2CSlave_FindSlave(I2C_HandleTypeDef *i2cHandle, I2CSlave_t **lcr_slave) {
 	for (uint8_t i = 0; i < __LCRSlaveListSize; i++) {
 		if (__LCRSlaveList[i]->i2cHandle->Instance == i2cHandle->Instance) {
 			*lcr_slave = __LCRSlaveList[i];
@@ -61,10 +54,10 @@ uint8_t __LCR_Slave_FindSlave(I2C_HandleTypeDef *i2cHandle, LCR_Slave **lcr_slav
 // no major calculations are done here!
 
 void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c) {
-	LCR_Slave *dev;
+	I2CSlave_t *dev;
 
 	// check if slave is valid, stop if it is invalid
-	if (!__LCR_Slave_FindSlave(hi2c, &dev)) {
+	if (!__I2CSlave_FindSlave(hi2c, &dev)) {
 		return;
 	}
 
@@ -87,10 +80,10 @@ void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c) {
 }
 
 void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, uint16_t AddrMatchCode) {
-	LCR_Slave *dev;
+	I2CSlave_t *dev;
 
 	// check if slave is valid, stop if it is invalid
-	if (!__LCR_Slave_FindSlave(hi2c, &dev)) {
+	if (!__I2CSlave_FindSlave(hi2c, &dev)) {
 		return;
 	}
 
@@ -116,10 +109,10 @@ void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, ui
 }
 
 void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *hi2c) {
-	LCR_Slave *dev;
+	I2CSlave_t *dev;
 
 	// check if slave is valid, stop if it is invalid
-	if (!__LCR_Slave_FindSlave(hi2c, &dev)) {
+	if (!__I2CSlave_FindSlave(hi2c, &dev)) {
 		return;
 	}
 
@@ -145,10 +138,10 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *hi2c) {
 }
 
 void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *hi2c) {
-	LCR_Slave *dev;
+	I2CSlave_t *dev;
 
 	// check if slave is valid, stop if it is invalid
-	if (!__LCR_Slave_FindSlave(hi2c, &dev)) {
+	if (!__I2CSlave_FindSlave(hi2c, &dev)) {
 		return;
 	}
 

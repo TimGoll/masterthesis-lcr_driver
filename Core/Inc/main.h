@@ -32,14 +32,10 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "LCR_Data.h"
-#include "MCP4725.h"
-#include "LCR_Slave.h"
-#include "AnaRP.h"
-#include "AnaOut.h"
-#include "Flash.h"
-
-#include "../Code/Display.h"
+#include "../Code/Threads/MainThread.h"
+#include "../Code/Threads/Display.h"
+#include "../Code/Threads/AnalogIn.h"
+#include "../Code/Threads/AnalogOut.h"
 
 #include <stdio.h>
 #include <string.h>
