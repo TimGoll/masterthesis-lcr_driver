@@ -21,7 +21,7 @@ void SineGen_SetupSine(SineGen_t *dev, uint16_t min, uint16_t max, uint16_t freq
 	dev->buffer_size = sample_count;
 
 	for (uint16_t i = 0; i < sample_count; i++) {
-		dev->buffer[i] = (sin(i * 2 * PI / sample_count) + 1) * ((max - min) / 2) + min;
+		dev->buffer[i] = (sin(i * 2 * SINEGEN_PI / sample_count) + 1) * ((max - min) / 2) + min;
 	}
 }
 

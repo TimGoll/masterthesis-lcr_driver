@@ -18,6 +18,10 @@
 
 #include "stm32h7xx_hal.h"
 
+#define ARM_MATH_CM7
+
+#include "../../Libs/CMSIS_DSP/arm_math.h"
+
 #define ANARP_BUFFER_SIZE 4096 ///< size should be set so that size/2 is enough to reconstruct sine wave
 
 typedef struct {

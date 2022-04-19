@@ -24,7 +24,7 @@
 #include "cmsis_os.h"
 #include "stm32h7xx_hal.h"
 
-#define PI 3.14159265358979323846
+#define SINEGEN_PI 3.14159265358979323846f
 
 /**
  * @brief The analog output structure.
