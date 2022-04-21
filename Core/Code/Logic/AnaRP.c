@@ -10,6 +10,8 @@ void AnaRP_Initialize(AnaRP_t *dev, ADC_HandleTypeDef *hadc) {
 // CALLBACKS
 
 void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc) {
+	HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
+
 	// called when conversion is half finished
 	//char usb_buf[128];
 
