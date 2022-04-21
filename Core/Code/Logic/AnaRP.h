@@ -22,7 +22,7 @@
 
 #include "../../Libs/CMSIS_DSP/arm_math.h"
 
-#define ANARP_BUFFER_SIZE 32 //4096 ///< size should be set so that size/2 is enough to reconstruct sine wave
+#define ANARP_BUFFER_SIZE 8 //4096 ///< size should be set so that size/2 is enough to reconstruct sine wave
 
 typedef struct {
 	ADC_HandleTypeDef *hadc;
