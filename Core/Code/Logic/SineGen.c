@@ -8,7 +8,7 @@ void SineGen_Initialize(SineGen_t *dev, TIM_HandleTypeDef *tmr, DAC_HandleTypeDe
 }
 
 void SineGen_SetupSine(SineGen_t *dev, uint16_t min, uint16_t max, uint16_t frequency) {
-	uint16_t sample_count = SAMPLE_FREQ / frequency;
+	uint16_t sample_count = DAC_SAMPLE_FREQ / frequency;
 
 	// in the first step, the existing buffer should be freed in case the sample size has changed
 	// if no buffer was created so far, nothing will happen here

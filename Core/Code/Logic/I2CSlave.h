@@ -51,8 +51,8 @@ typedef struct {
 	uint8_t __found_address; ///< Internal variable that tracks if address is set
 } I2CSlave_t;
 
-extern I2CSlave_t *__LCRSlaveList[4]; ///< A list that contains all LCR slave objects. There is probably only one slave, but it is possible to have multiple seperate slaves on the same MCU.
-extern uint8_t __LCRSlaveListSize; ///< The amount of slaves on the MCU.
+I2CSlave_t *__LCRSlaveList[4]; ///< A list that contains all LCR slave objects. There is probably only one slave, but it is possible to have multiple seperate slaves on the same MCU.
+uint8_t __LCRSlaveListSize; ///< The amount of slaves on the MCU.
 
 /**
  * Initializes a new slave instance. Adds all necessary data to the slave data object and adds said object to the array of available slaves.
