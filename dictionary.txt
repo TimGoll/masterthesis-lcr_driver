@@ -24,3 +24,5 @@ params
 cortex
 imag
 docs
+fs
+oversampling
