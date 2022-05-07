@@ -13,8 +13,7 @@
   ******************************************************************************
   */
 
-#ifndef INC_SINEGEN_H
-#define INC_SINEGEN_H
+#pragma once
 
 #include "../config.h"
 
@@ -23,8 +22,6 @@
 
 #include "cmsis_os.h"
 #include "stm32h7xx_hal.h"
-
-#define SINEGEN_PI 3.14159265358979323846f
 
 /**
  * @brief The analog output structure.
@@ -65,5 +62,3 @@ void SineGen_SetupSine(SineGen_t *dev, uint16_t min, uint16_t max, uint16_t freq
  * @param [in] *dev The analog output structure
  */
 void SineGen_OutputSine(SineGen_t *dev);
-
-#endif /* INC_SINEGEN_H */

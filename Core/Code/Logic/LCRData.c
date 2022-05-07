@@ -168,42 +168,6 @@ uint8_t *LCRData_GetStartingMemoryAddressReference() {
 	return __LCRData_GetByteReference(LCR_DATA_REG_DATA, LCR_DATA_REG_MEM_ADDRESS_START);
 }
 
-// DE RESISTANCE //
-
-uint8_t LCRData_SetDEResistance(uint32_t resistance) {
-	return __LCRData_SetWord(LCR_DATA_REG_DATA, resistance, LCR_DATA_REG_RESISTANCE);
-}
-
-uint8_t LCRData_SetInitialDEResistance(uint32_t resistance) {
-	return __LCRData_SetWord(LCR_DATA_REG_INITIAL, resistance, LCR_DATA_REG_RESISTANCE);
-}
-
-uint32_t LCRData_GetDEResistance() {
-	return __LCRData_GetWord(LCR_DATA_REG_DATA, LCR_DATA_REG_RESISTANCE);
-}
-
-uint32_t *LCRData_GetDEResistanceReference() {
-	return __LCRData_GetWordReference(LCR_DATA_REG_DATA, LCR_DATA_REG_RESISTANCE);
-}
-
-// DE CAPACITANCE //
-
-uint8_t LCRData_SetDECapacitance(uint32_t capacitance) {
-	return __LCRData_SetWord(LCR_DATA_REG_DATA, capacitance, LCR_DATA_REG_CAPACITANCE);
-}
-
-uint8_t LCRData_SetInitialDECapacitance(uint32_t capacitance) {
-	return __LCRData_SetWord(LCR_DATA_REG_INITIAL, capacitance, LCR_DATA_REG_CAPACITANCE);
-}
-
-uint32_t LCRData_GetDECapacitance() {
-	return __LCRData_GetWord(LCR_DATA_REG_DATA, LCR_DATA_REG_CAPACITANCE);
-}
-
-uint32_t *LCRData_GetDECapacitanceReference() {
-	return __LCRData_GetWordReference(LCR_DATA_REG_DATA, LCR_DATA_REG_CAPACITANCE);
-}
-
 // MEASUREMENT SIGNAL MIN VOLTAGE //
 
 uint8_t LCRData_SetMinMeasurementVoltage(uint16_t voltage) {
@@ -258,6 +222,117 @@ uint16_t *LCRData_GetMeasurementFrequencyReference() {
 	return __LCRData_GetHalfWordReference(LCR_DATA_REG_DATA, LCR_DATA_REG_MES_FREQ);
 }
 
+// DE MODEL //
+
+uint8_t LCRData_SetDEModel(uint8_t model) {
+	return __LCRData_SetByte(LCR_DATA_REG_DATA, model, LCR_DATA_REG_DE_MODEL);
+}
+
+uint8_t LCRData_SetInitialDEModel(uint8_t model) {
+	return __LCRData_SetByte(LCR_DATA_REG_INITIAL, model, LCR_DATA_REG_DE_MODEL);
+}
+
+uint8_t LCRData_GetDEModel() {
+	return __LCRData_GetByte(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_MODEL);
+}
+
+uint8_t *LCRData_GetDEModelReference() {
+	return __LCRData_GetByteReference(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_MODEL);
+}
+
+
+
+
+
+// DE RESISTANCE //
+
+uint8_t LCRData_SetDEResistance(uint16_t resistance) {
+	return __LCRData_SetHalfWord(LCR_DATA_REG_DATA, resistance, LCR_DATA_REG_DE_RESISTANCE);
+}
+
+uint8_t LCRData_SetInitialDEResistance(uint16_t resistance) {
+	return __LCRData_SetHalfWord(LCR_DATA_REG_INITIAL, resistance, LCR_DATA_REG_DE_RESISTANCE);
+}
+
+uint16_t LCRData_GetDEResistance() {
+	return __LCRData_GetHalfWord(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_RESISTANCE);
+}
+
+uint16_t *LCRData_GetDEResistanceReference() {
+	return __LCRData_GetHalfWordReference(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_RESISTANCE);
+}
+
+// DE CAPACITANCE //
+
+uint8_t LCRData_SetDECapacitance(uint16_t capacitance) {
+	return __LCRData_SetHalfWord(LCR_DATA_REG_DATA, capacitance, LCR_DATA_REG_DE_CAPACITANCE);
+}
+
+uint8_t LCRData_SetInitialDECapacitance(uint16_t capacitance) {
+	return __LCRData_SetHalfWord(LCR_DATA_REG_INITIAL, capacitance, LCR_DATA_REG_DE_CAPACITANCE);
+}
+
+uint16_t LCRData_GetDECapacitance() {
+	return __LCRData_GetHalfWord(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_CAPACITANCE);
+}
+
+uint16_t *LCRData_GetDECapacitanceReference() {
+	return __LCRData_GetHalfWordReference(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_CAPACITANCE);
+}
+
+// DE PHASE //
+
+uint8_t LCRData_SetDEPhase(uint16_t phase) {
+	return __LCRData_SetHalfWord(LCR_DATA_REG_DATA, phase, LCR_DATA_REG_DE_PHASE);
+}
+
+uint8_t LCRData_SetInitialDEPhase(uint16_t phase) {
+	return __LCRData_SetHalfWord(LCR_DATA_REG_INITIAL, phase, LCR_DATA_REG_DE_PHASE);
+}
+
+uint16_t LCRData_GetDEPhase() {
+	return __LCRData_GetHalfWord(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_PHASE);
+}
+
+uint16_t *CurrentMagnitude() {
+	return __LCRData_GetHalfWordReference(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_PHASE);
+}
+
+// DE VOLTAGE MAGNITUDE //
+
+uint8_t LCRData_SetDEVoltageMagnitude(uint16_t voltage) {
+	return __LCRData_SetHalfWord(LCR_DATA_REG_DATA, voltage, LCR_DATA_REG_DE_VOLTAGE_MAG);
+}
+
+uint8_t LCRData_SetInitialDEVoltageMagnitude(uint16_t voltage) {
+	return __LCRData_SetHalfWord(LCR_DATA_REG_INITIAL, voltage, LCR_DATA_REG_DE_VOLTAGE_MAG);
+}
+
+uint16_t LCRData_GetDEVoltageMagnitude() {
+	return __LCRData_GetHalfWord(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_VOLTAGE_MAG);
+}
+
+uint16_t *LCRData_GetDEVoltageMagnitudeReference() {
+	return __LCRData_GetHalfWordReference(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_VOLTAGE_MAG);
+}
+
+// DE CURRENT MAGNITUDE //
+
+uint8_t LCRData_SetDECurrentMagnitude(uint16_t current) {
+	return __LCRData_SetHalfWord(LCR_DATA_REG_DATA, current, LCR_DATA_REG_DE_CURRENT_MAG);
+}
+
+uint8_t LCRData_SetInitialDECurrentMagnitude(uint16_t current) {
+	return __LCRData_SetHalfWord(LCR_DATA_REG_INITIAL, current, LCR_DATA_REG_DE_CURRENT_MAG);
+}
+
+uint16_t LCRData_GetDECurrentMagnitude() {
+	return __LCRData_GetHalfWord(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_CURRENT_MAG);
+}
+
+uint16_t *LCRData_GetDECurrentMagnitudeReference() {
+	return __LCRData_GetHalfWordReference(LCR_DATA_REG_DATA, LCR_DATA_REG_DE_CURRENT_MAG);
+}
 
 
 

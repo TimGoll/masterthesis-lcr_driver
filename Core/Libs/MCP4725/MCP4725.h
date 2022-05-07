@@ -12,8 +12,7 @@
   ******************************************************************************
   */
 
-#ifndef INC_MCP4725_H
-#define INC_MCP4725_H
+#pragma once
 
 #include "stm32h7xx_hal.h" // Needed for I2C
 
@@ -111,5 +110,3 @@ HAL_StatusTypeDef MCP4725_ReadData(MCP4725_t *dev, uint8_t *data, uint8_t length
  * @retval HAL_StatusTypeDef HAL Status
  */
 HAL_StatusTypeDef MCP4725_WriteData(MCP4725_t *dev, MCP4725_DataMode_t eeprom_or_dac);
-
-#endif /* INC_MCP4725_H */

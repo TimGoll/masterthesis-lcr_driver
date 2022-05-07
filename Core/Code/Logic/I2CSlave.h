@@ -12,8 +12,7 @@
   ******************************************************************************
   */
 
-#ifndef INC_LCR_SLAVE_H
-#define INC_LCR_SLAVE_H
+#pragma once
 
 #include "../Logic/LCRData.h"
 
@@ -85,5 +84,3 @@ I2CSlave_State_t I2CSlave_HandleData(I2CSlave_t *dev);
  * @retval uint8_t The result of the search. 1 if a slave was found.
  */
 uint8_t __I2CSlave_FindSlave(I2C_HandleTypeDef *i2cHandle, I2CSlave_t **lcr_slave);
-
-#endif /* INC_LCR_SLAVE_H */

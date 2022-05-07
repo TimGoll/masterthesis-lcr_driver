@@ -13,8 +13,7 @@
   ******************************************************************************
   */
 
-#ifndef INC_ANARP_H
-#define INC_ANARP_H
+#pragma once
 
 #include <math.h>
 
@@ -79,6 +78,9 @@ void AnaRP_ProcessData(AnaRP_t *dev);
 
 uint8_t AnaRP_IsReady(AnaRP_t *dev);
 
+uint8_t AnaRP_ResultsAvailable(AnaRP_t *dev);
+
+AnaRP_FFTResults_t *AnaRP_GetResults(AnaRP_t *dev);
+
 uint8_t __AnaRP_FindADC(ADC_HandleTypeDef *hadc, AnaRP_t **adc);
 
-#endif /* INC_ANARP_H */

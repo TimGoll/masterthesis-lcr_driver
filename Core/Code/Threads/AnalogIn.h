@@ -1,6 +1,9 @@
+#pragma once
+
 #include "cmsis_os.h"
 
 #include "../Logic/AnaRP.h"
+#include "../Logic/DEModel.h"
 
 typedef struct {
 	ADC_HandleTypeDef *hadc_1;

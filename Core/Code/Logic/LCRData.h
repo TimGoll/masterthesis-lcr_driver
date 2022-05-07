@@ -13,8 +13,7 @@
   ******************************************************************************
   */
 
-#ifndef INC_LCR_DATA_H
-#define INC_LCR_DATA_H
+#pragma once
 
 #include "stm32h7xx_hal.h"
 #include "Flash.h"
@@ -31,11 +30,16 @@
 #define LCR_DATA_REG_PARTID 3 ///< size: 1 byte
 #define LCR_DATA_REG_MEM_ADDRESS 4 ///< size: 1 byte
 #define LCR_DATA_REG_MEM_ADDRESS_START 5 ///< size: 1 byte
-#define LCR_DATA_REG_RESISTANCE 6 ///< size: 4 bytes
-#define LCR_DATA_REG_CAPACITANCE 10 ///< size: 4 bytes
-#define LCR_DATA_REG_MES_VOLT_MIN 14 ///< size: 2 bytes
-#define LCR_DATA_REG_MES_VOLT_MAX 16 ///< size: 2 bytes
-#define LCR_DATA_REG_MES_FREQ 18 ///< size: 2 bytes
+#define LCR_DATA_REG_MES_VOLT_MIN 6 ///< size: 2 bytes
+#define LCR_DATA_REG_MES_VOLT_MAX 8 ///< size: 2 bytes
+#define LCR_DATA_REG_MES_FREQ 10 ///< size: 2 bytes
+#define LCR_DATA_REG_DE_MODEL 12 ///< size: 1 byte
+
+#define LCR_DATA_REG_DE_RESISTANCE 127 ///< size: 2 bytes
+#define LCR_DATA_REG_DE_CAPACITANCE 129 ///< size: 2 bytes
+#define LCR_DATA_REG_DE_PHASE 131 ///< size: 2 bytes
+#define LCR_DATA_REG_DE_VOLTAGE_MAG 133 ///< size: 2 bytes
+#define LCR_DATA_REG_DE_CURRENT_MAG 135 ///< size: 2 bytes
 
 #define LCR_DATA_REG_COMMAND LCR_DATA_SIZE - 5 ///< size: 1 byte command followed by 4 bytes of data
 
@@ -92,14 +96,6 @@ uint8_t LCRData_SetStartingMemoryAddress(uint8_t mem_address);
 uint8_t LCRData_SetInitialStartingMemoryAddress(uint8_t mem_address);
 uint8_t LCRData_GetStartingMemoryAddress();
 uint8_t *LCRData_GetStartingMemoryAddressReference();
-uint8_t LCRData_SetDEResistance(uint32_t resistance);
-uint8_t LCRData_SetInitialDEResistance(uint32_t resistance);
-uint32_t LCRData_GetDEResistance();
-uint32_t *LCRData_GetDEResistanceReference();
-uint8_t LCRData_SetDECapacitance(uint32_t capacitance);
-uint8_t LCRData_SetInitialDECapacitance(uint32_t capacitance);
-uint32_t LCRData_GetDECapacitance();
-uint32_t *LCRData_GetDECapacitanceReference();
 uint8_t LCRData_SetMinMeasurementVoltage(uint16_t voltage);
 uint8_t LCRData_SetInitialMinMeasurementVoltage(uint16_t voltage);
 uint16_t LCRData_GetMinMeasurementVoltage();
@@ -112,6 +108,31 @@ uint8_t LCRData_SetMeasurementFrequency(uint16_t frequency);
 uint8_t LCRData_SetInitialMeasurementFrequency(uint16_t frequency);
 uint16_t LCRData_GetMeasurementFrequency();
 uint16_t *LCRData_GetMeasurementFrequencyReference();
+uint8_t LCRData_SetDEModel(uint8_t model);
+uint8_t LCRData_SetInitialDEModel(uint8_t model);
+uint8_t LCRData_GetDEModel();
+uint8_t *LCRData_GetDEModelReference();
+
+uint8_t LCRData_SetDEResistance(uint16_t resistance);
+uint8_t LCRData_SetInitialDEResistance(uint16_t resistance);
+uint16_t LCRData_GetDEResistance();
+uint16_t *LCRData_GetDEResistanceReference();
+uint8_t LCRData_SetDECapacitance(uint16_t capacitance);
+uint8_t LCRData_SetInitialDECapacitance(uint16_t capacitance);
+uint16_t LCRData_GetDECapacitance();
+uint16_t *LCRData_GetDECapacitanceReference();
+uint8_t LCRData_SetDEPhase(uint16_t phase);
+uint8_t LCRData_SetInitialDEPhase(uint16_t phase);
+uint16_t LCRData_GetDEPhase();
+uint16_t *CurrentMagnitude();
+uint8_t LCRData_SetDEVoltageMagnitude(uint16_t voltage);
+uint8_t LCRData_SetInitialDEVoltageMagnitude(uint16_t voltage);
+uint16_t LCRData_GetDEVoltageMagnitude();
+uint16_t *LCRData_GetDEVoltageMagnitudeReference();
+uint8_t LCRData_SetDECurrentMagnitude(uint16_t current);
+uint8_t LCRData_SetInitialDECurrentMagnitude(uint16_t current);
+uint16_t LCRData_GetDECurrentMagnitude();
+uint16_t *LCRData_GetDECurrentMagnitudeReference();
 
 void * __LCRData_GetDataReference(LCRData_RegisterTypeDef reg_type, uint8_t address);
 uint32_t *__LCRData_GetWordReference(LCRData_RegisterTypeDef reg_type, uint8_t address);
@@ -126,5 +147,3 @@ uint8_t __LCRData_SetData(LCRData_RegisterTypeDef reg_type, void *value, uint8_t
 uint8_t __LCRData_SetWord(LCRData_RegisterTypeDef reg_type, uint32_t value, uint8_t address);
 uint8_t __LCRData_SetHalfWord(LCRData_RegisterTypeDef reg_type, uint16_t value, uint8_t address);
 uint8_t __LCRData_SetByte(LCRData_RegisterTypeDef reg_type, uint8_t value, uint8_t address);
-
-#endif /* INC_LCR_DATA_H */

@@ -14,27 +14,31 @@ void AnalogIn_StartThread(void *argument) {
 	HAL_TIM_OC_Start(params->htim, TIM_CHANNEL_1); // TODO debugging pin out
 
 	while(1) {
-		osDelay(1);
-
 		// attempt to process data
 		AnaRP_ProcessData(&analogData_voltage);
 		AnaRP_ProcessData(&analogData_current);
 
-		// only restart a new ADC read if both ADCs are ready
-		if (!AnaRP_IsReady(&analogData_voltage) || !AnaRP_IsReady(&analogData_current)) {
-			continue;
+		if (AnaRP_ResultsAvailable(&analogData_voltage) && AnaRP_ResultsAvailable(&analogData_current)) {
+			DEModel_ProcessData(AnaRP_GetResults(&analogData_voltage), AnaRP_GetResults(&analogData_current));
 		}
 
-		// stop the timer so that it can be restarted after a new DMA
-		// conversion is triggered; this is important to have both conversion
-		// perfectly in sync
-		HAL_TIM_Base_Stop(params->htim);
+		// only restart a new ADC read if both ADCs are ready
+		if (AnaRP_IsReady(&analogData_voltage) && AnaRP_IsReady(&analogData_current)) {
+			// stop the timer so that it can be restarted after a new DMA
+			// conversion is triggered; this is important to have both conversion
+			// perfectly in sync
+			HAL_TIM_Base_Stop(params->htim);
 
-		// start the HAL conversion; it starts on the first timer tick
-		AnaRP_StartDMA(&analogData_voltage);
-		AnaRP_StartDMA(&analogData_current);
+			osDelay(1);
 
-		// now start the timer
-		HAL_TIM_Base_Start(params->htim);
+			// start the HAL conversion; it starts on the first timer tick
+			AnaRP_StartDMA(&analogData_voltage);
+			AnaRP_StartDMA(&analogData_current);
+
+			// now start the timer
+			HAL_TIM_Base_Start(params->htim);
+		}
+
+		osDelay(1);
 	}
 }

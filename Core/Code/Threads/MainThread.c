@@ -8,7 +8,7 @@ void MainThread_StartThread(void *argument) {
 	LCRData_SetInitialDevID(0xAB);
 	LCRData_SetInitialMemsID(0x61);
 	LCRData_SetInitialPartID(0xFF);
-	LCRData_SetInitialMinMeasurementVoltage(410); // 0.1V
+	LCRData_SetInitialMinMeasurementVoltage(124); // 0.1V
 	LCRData_SetInitialMaxMeasurementVoltage(3970); // 3.2V
 	LCRData_SetInitialMeasurementFrequency(10000); // 10kHz
 

@@ -26,3 +26,14 @@ imag
 docs
 fs
 oversampling
+ohm
+memcpy
+abs
+malloc
+aleksander
+alekseev
+afiskon
+olivier
+fede
+logo
+omega

@@ -68,7 +68,7 @@ void AnaRP_ProcessData(AnaRP_t *dev) {
 	dev->fft_results.frequency = ADC_SAMPLE_FREQ / ADC_FFT_SIZE * (dev->fft_data.fft_max_mag_idx + 1);
 
 	// set the flag that the processing is done
-	dev->process_data_flag = 0;
+	dev->process_data_flag = 2;
 }
 
 uint8_t AnaRP_IsReady(AnaRP_t *dev) {
@@ -84,6 +84,16 @@ uint8_t AnaRP_IsReady(AnaRP_t *dev) {
 	}
 
 	return 1;
+}
+
+uint8_t AnaRP_ResultsAvailable(AnaRP_t *dev) {
+	return dev->process_data_flag == 2;
+}
+
+AnaRP_FFTResults_t *AnaRP_GetResults(AnaRP_t *dev) {
+	dev->process_data_flag = 0;
+
+	return &dev->fft_results;
 }
 
 uint8_t __AnaRP_FindADC(ADC_HandleTypeDef *hadc, AnaRP_t **adc) {

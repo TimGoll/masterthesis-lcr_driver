@@ -172,20 +172,35 @@ void SSD1306_DrawPixel(SSD1306_t *dev, uint8_t x, uint8_t y, SSD1306_Color_t col
 	dev->is_dirty = 1;
 }
 
-char SSD1306_WriteChar(SSD1306_t *dev, char ch, SSD1306_Font_t font, SSD1306_Color_t color) {
-	// Check if character is valid
-	if (ch < 32 || ch > 126)
-		return 0;
-
-	// Check remaining space on current line
+char SSD1306_DrawChar(SSD1306_t *dev, char ch, SSD1306_Font_t font, SSD1306_Color_t color) {
+	// Check remaining space
 	if (dev->width < (dev->cur_x + font.char_width) || dev->height < (dev->cur_y + font.char_height)) {
 		// Not enough space on current line
 		return 0;
 	}
 
+	// Check if character is valid
+	if (ch > 126) {
+		return 0;
+	}
+
+	// check if normal, special or no valid char
+	const uint16_t *char_start = NULL;
+
+	if (ch < 32) {
+		if (ch < SSD1606_FONT_START_SPECIAL_CHARS || ch >= font.s_data_amount + SSD1606_FONT_START_SPECIAL_CHARS) {
+			return 0;
+		}
+
+		char_start = font.s_data + (ch - SSD1606_FONT_START_SPECIAL_CHARS) * font.char_height;
+	} else {
+		char_start = font.data + (ch - 32) * font.char_height;
+	}
+
+
 	// Use the font to write
 	for (uint8_t i = 0; i < font.char_height; i++) {
-		uint16_t b = font.data[(ch - 32) * font.char_height + i];
+		uint16_t b = *(char_start + i);
 
 		for (uint8_t j = 0; j < font.char_width; j++) {
 			if((b << j) & 0x8000)  {
@@ -203,13 +218,49 @@ char SSD1306_WriteChar(SSD1306_t *dev, char ch, SSD1306_Font_t font, SSD1306_Col
 	return ch;
 }
 
-char SSD1306_WriteString(SSD1306_t *dev, char* str, SSD1306_Font_t font, SSD1306_Color_t color) {
-	// Write until null-byte
-	while (SSD1306_WriteChar(dev, *str, font, color) == *str) {
+char SSD1306_DrawString(SSD1306_t *dev, char* str, SSD1306_Font_t font, SSD1306_Color_t color) {
+	while (1) {
+		if (*str == '\0') {
+			break;
+		}
+
+		if (SSD1306_DrawChar(dev, *str, font, color) != *str) {
+			break;
+		}
+
 		str++;
 	}
 
 	return *str;
+}
+
+void SSD1306_DrawBitmap(SSD1306_t *dev, SSD1306_Bitmap_t bitmap, SSD1306_Color_t color) {
+	// Check remaining space
+	if (dev->width < (dev->cur_x + bitmap.width) || dev->height < (dev->cur_y + bitmap.height)) {
+		return;
+	}
+
+	uint8_t bytes_per_row = (bitmap.width + 7) / 8; // Bitmap scan line pad = whole byte
+	uint8_t byte = 0;
+
+	for (uint8_t j = 0; j < bitmap.height; j++) {
+		for (uint8_t i = 0; i < bitmap.width; i++) {
+			if (i & 7) {
+				byte <<= 1;
+			} else {
+				byte = (*(uint8_t *)(&bitmap.data[j * bytes_per_row + i / 8]));
+			}
+
+			if (byte & 0x80) {
+				SSD1306_DrawPixel(dev, dev->cur_x + i, dev->cur_y + j, (SSD1306_Color_t) color);
+			} else {
+				SSD1306_DrawPixel(dev, dev->cur_x + i, dev->cur_y + j, (SSD1306_Color_t) !color);
+			}
+		}
+	}
+
+	// The current space is now taken
+	dev->cur_x += bitmap.width;
 }
 
 void SSD1306_SetCursor(SSD1306_t *dev, uint8_t x, uint8_t y) {
@@ -299,30 +350,26 @@ void SSD1306_DrawRectangle(SSD1306_t *dev, uint8_t x1, uint8_t y1, uint8_t x2, u
 	SSD1306_DrawLine(dev, x1, y2, x1, y1, color);
 }
 
-void SSD1306_DrawBitmap(SSD1306_t *dev, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t* bitmap, SSD1306_Color_t color) {
-	if (x >= dev->width || y >= dev->height) {
-		return;
+// FONT FUNCTIONS
+
+uint8_t SSD1606Font_AddSpecialChar(SSD1306_Font_t *font, const uint16_t *s_char) {
+	if (font->s_data_amount >= SSD1606_FONT_MAX_SPECIAL_CHARS) {
+		return 0;
 	}
 
-	uint8_t byte_width = (w + 7) / 8; // Bitmap scan line pad = whole byte
-	uint8_t byte = 0;
+	// copy to buffer
+	uint16_t offset = font->s_data_amount * font->char_height;
 
-	for (uint8_t j = 0; j < h; j++, y++) {
-		for (uint8_t i = 0; i < w; i++) {
-			if (i & 7) {
-				byte <<= 1;
-			} else {
-				byte = (*(uint8_t *)(&bitmap[j * byte_width + i / 8]));
-			}
-
-			if (byte & 0x80) {
-				SSD1306_DrawPixel(dev, x + i, y, color);
-			}
-		}
+	for (uint16_t i = 0; i < font->char_height; i++) {
+		font->s_data[offset + i] = s_char[i];
 	}
+
+	font->s_data_amount++;
+
+	return font->s_data_amount - 1 + SSD1606_FONT_START_SPECIAL_CHARS;
 }
 
-// HELPPERS //
+// HELPERS //
 
 void SSD1306_WriteCommand(SSD1306_t *dev, uint8_t data) {
 	HAL_I2C_Mem_Write(dev->i2cHandle, dev->address, 0x00, 1, &data, 1, HAL_MAX_DELAY);

@@ -15,8 +15,7 @@
   ******************************************************************************
   */
 
-#ifndef INC_FLASH_H
-#define INC_FLASH_H
+#pragma once
 
 #define FLASH_CACHE_SIZE 32
 #define FLASH_WORD_SIZE 0x20
@@ -119,5 +118,3 @@ uint8_t __Flash_GetBank(uint32_t address);
  * @retval uint8_t The flash sector
  */
 uint8_t __Flash_GetSector(uint32_t address);
-
-#endif /* INC_FLASH_H */
