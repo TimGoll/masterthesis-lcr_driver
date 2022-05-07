@@ -27,6 +27,12 @@ void Display_StartThread(void *argument) {
 		uint16_t max_volt_significant, max_volt_mantissa;
 		Common_GetSignificantAndMantissa(LCRData_GetMaxMeasurementVoltage(), 1241, 2, &max_volt_significant, &max_volt_mantissa);
 
+		uint16_t resistance_significant, resistance_mantissa;
+		Common_GetSignificantAndMantissa(LCRData_GetDEResistance(), 1, 2, &resistance_significant, &resistance_mantissa);
+
+		uint16_t capacitance_significant, capacitance_mantissa;
+		Common_GetSignificantAndMantissa(LCRData_GetDECapacitance(), 1, 2, &capacitance_significant, &capacitance_mantissa);
+
 		// static top header
 		SSD1306_Fill(&ssd1306, SSD1306_COLOR_BLACK);
 
@@ -59,11 +65,13 @@ void Display_StartThread(void *argument) {
 		SSD1306_DrawLine(&ssd1306, 0, 45, 127, 45, SSD1306_COLOR_WHITE);
 
 		// R/C data
+		sprintf(buffer, "R=%d.%02d\1", resistance_significant, resistance_mantissa);
 		SSD1306_SetCursor(&ssd1306, 0, 48);
-		SSD1306_DrawString(&ssd1306, "R=1854\1", SSD1306_font_6x8, SSD1306_COLOR_WHITE);
+		SSD1306_DrawString(&ssd1306, buffer, SSD1306_font_6x8, SSD1306_COLOR_WHITE);
 
+		sprintf(buffer, "C=%d.%02dpF", capacitance_significant, capacitance_mantissa);
 		SSD1306_SetCursor(&ssd1306, 0, 56);
-		SSD1306_DrawString(&ssd1306, "C=6786pF", SSD1306_font_6x8, SSD1306_COLOR_WHITE);
+		SSD1306_DrawString(&ssd1306, buffer, SSD1306_font_6x8, SSD1306_COLOR_WHITE);
 
 		SSD1306_UpdateScreen(&ssd1306);
 

@@ -37,3 +37,5 @@ olivier
 fede
 logo
 omega
+nyquist
+femto

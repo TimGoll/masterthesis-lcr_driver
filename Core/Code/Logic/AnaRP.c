@@ -55,6 +55,9 @@ void AnaRP_ProcessData(AnaRP_t *dev) {
 	// calculate the magnitude (squared real and imaginary); first entry is ignored because it is the DC offset
 	arm_max_f32(&(dev->fft_data.fft_mag[1]), ADC_FFT_SIZE / 2 - 1, &dev->fft_results.magnitude, &dev->fft_data.fft_max_mag_idx);
 
+	// increase the index by 1 because we omitted the first magnitude value
+	dev->fft_data.fft_max_mag_idx++;
+
 	// the DC offset, normed to one sample
 	dev->fft_results.dc_offset = dev->fft_data.fft_out[0] / ADC_FFT_SIZE;
 
@@ -65,7 +68,7 @@ void AnaRP_ProcessData(AnaRP_t *dev) {
 	dev->fft_results.phase = atan2f(dev->fft_data.fft_out[2 * dev->fft_data.fft_max_mag_idx + 1], dev->fft_data.fft_out[2 * dev->fft_data.fft_max_mag_idx]);
 
 	// the frequency is calculated by the sample index and a constant factor
-	dev->fft_results.frequency = ADC_SAMPLE_FREQ / ADC_FFT_SIZE * (dev->fft_data.fft_max_mag_idx + 1);
+	dev->fft_results.frequency = ADC_SAMPLE_FREQ / ADC_FFT_SIZE * (dev->fft_data.fft_max_mag_idx);
 
 	// set the flag that the processing is done
 	dev->process_data_flag = 2;
