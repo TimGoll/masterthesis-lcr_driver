@@ -246,95 +246,39 @@ uint8_t *CoreData_GetDEModelReference() {
 
 // DE RESISTANCE //
 
-uint8_t CoreData_SetDEResistance(uint16_t resistance) {
-	return __CoreData_SetHalfWord(COREDATA_REG_DATA, resistance, COREDATA_REG_DE_RESISTANCE);
+uint8_t CoreData_SetDEResistance(uint32_t resistance) {
+	return __CoreData_SetWord(COREDATA_REG_DATA, resistance, COREDATA_REG_DE_RESISTANCE);
 }
 
-uint8_t CoreData_SetInitialDEResistance(uint16_t resistance) {
-	return __CoreData_SetHalfWord(COREDATA_REG_INITIAL, resistance, COREDATA_REG_DE_RESISTANCE);
+uint8_t CoreData_SetInitialDEResistance(uint32_t resistance) {
+	return __CoreData_SetWord(COREDATA_REG_INITIAL, resistance, COREDATA_REG_DE_RESISTANCE);
 }
 
-uint16_t CoreData_GetDEResistance() {
-	return __CoreData_GetHalfWord(COREDATA_REG_DATA, COREDATA_REG_DE_RESISTANCE);
+uint32_t CoreData_GetDEResistance() {
+	return __CoreData_GetWord(COREDATA_REG_DATA, COREDATA_REG_DE_RESISTANCE);
 }
 
-uint16_t *CoreData_GetDEResistanceReference() {
-	return __CoreData_GetHalfWordReference(COREDATA_REG_DATA, COREDATA_REG_DE_RESISTANCE);
+uint32_t *CoreData_GetDEResistanceReference() {
+	return __CoreData_GetWordReference(COREDATA_REG_DATA, COREDATA_REG_DE_RESISTANCE);
 }
 
 // DE CAPACITANCE //
 
-uint8_t CoreData_SetDECapacitance(uint16_t capacitance) {
-	return __CoreData_SetHalfWord(COREDATA_REG_DATA, capacitance, COREDATA_REG_DE_CAPACITANCE);
+uint8_t CoreData_SetDECapacitance(uint32_t capacitance) {
+	return __CoreData_SetWord(COREDATA_REG_DATA, capacitance, COREDATA_REG_DE_CAPACITANCE);
 }
 
-uint8_t CoreData_SetInitialDECapacitance(uint16_t capacitance) {
-	return __CoreData_SetHalfWord(COREDATA_REG_INITIAL, capacitance, COREDATA_REG_DE_CAPACITANCE);
+uint8_t CoreData_SetInitialDECapacitance(uint32_t capacitance) {
+	return __CoreData_SetWord(COREDATA_REG_INITIAL, capacitance, COREDATA_REG_DE_CAPACITANCE);
 }
 
-uint16_t CoreData_GetDECapacitance() {
-	return __CoreData_GetHalfWord(COREDATA_REG_DATA, COREDATA_REG_DE_CAPACITANCE);
+uint32_t CoreData_GetDECapacitance() {
+	return __CoreData_GetWord(COREDATA_REG_DATA, COREDATA_REG_DE_CAPACITANCE);
 }
 
-uint16_t *CoreData_GetDECapacitanceReference() {
-	return __CoreData_GetHalfWordReference(COREDATA_REG_DATA, COREDATA_REG_DE_CAPACITANCE);
+uint32_t *CoreData_GetDECapacitanceReference() {
+	return __CoreData_GetWordReference(COREDATA_REG_DATA, COREDATA_REG_DE_CAPACITANCE);
 }
-
-// DE PHASE //
-
-uint8_t CoreData_SetDEPhase(uint16_t phase) {
-	return __CoreData_SetHalfWord(COREDATA_REG_DATA, phase, COREDATA_REG_DE_PHASE);
-}
-
-uint8_t CoreData_SetInitialDEPhase(uint16_t phase) {
-	return __CoreData_SetHalfWord(COREDATA_REG_INITIAL, phase, COREDATA_REG_DE_PHASE);
-}
-
-uint16_t CoreData_GetDEPhase() {
-	return __CoreData_GetHalfWord(COREDATA_REG_DATA, COREDATA_REG_DE_PHASE);
-}
-
-uint16_t *CurrentMagnitude() {
-	return __CoreData_GetHalfWordReference(COREDATA_REG_DATA, COREDATA_REG_DE_PHASE);
-}
-
-// DE VOLTAGE MAGNITUDE //
-
-uint8_t CoreData_SetDEVoltageMagnitude(uint16_t voltage) {
-	return __CoreData_SetHalfWord(COREDATA_REG_DATA, voltage, COREDATA_REG_DE_VOLTAGE_MAG);
-}
-
-uint8_t CoreData_SetInitialDEVoltageMagnitude(uint16_t voltage) {
-	return __CoreData_SetHalfWord(COREDATA_REG_INITIAL, voltage, COREDATA_REG_DE_VOLTAGE_MAG);
-}
-
-uint16_t CoreData_GetDEVoltageMagnitude() {
-	return __CoreData_GetHalfWord(COREDATA_REG_DATA, COREDATA_REG_DE_VOLTAGE_MAG);
-}
-
-uint16_t *CoreData_GetDEVoltageMagnitudeReference() {
-	return __CoreData_GetHalfWordReference(COREDATA_REG_DATA, COREDATA_REG_DE_VOLTAGE_MAG);
-}
-
-// DE CURRENT MAGNITUDE //
-
-uint8_t CoreData_SetDECurrentMagnitude(uint16_t current) {
-	return __CoreData_SetHalfWord(COREDATA_REG_DATA, current, COREDATA_REG_DE_CURRENT_MAG);
-}
-
-uint8_t CoreData_SetInitialDECurrentMagnitude(uint16_t current) {
-	return __CoreData_SetHalfWord(COREDATA_REG_INITIAL, current, COREDATA_REG_DE_CURRENT_MAG);
-}
-
-uint16_t CoreData_GetDECurrentMagnitude() {
-	return __CoreData_GetHalfWord(COREDATA_REG_DATA, COREDATA_REG_DE_CURRENT_MAG);
-}
-
-uint16_t *CoreData_GetDECurrentMagnitudeReference() {
-	return __CoreData_GetHalfWordReference(COREDATA_REG_DATA, COREDATA_REG_DE_CURRENT_MAG);
-}
-
-
 
 
 

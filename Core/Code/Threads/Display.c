@@ -24,11 +24,11 @@ void Display_StartThread(void *argument) {
 
 	while(1) {
 		// prepare values
-		Common_GetSignificantAndMantissa(CoreData_GetMeasurementFrequency(), 1000, 2, &freq_significant, &freq_mantissa);
-		Common_GetSignificantAndMantissa(CoreData_GetMinMeasurementVoltage(), 1241, 2, &min_volt_significant, &min_volt_mantissa);
-		Common_GetSignificantAndMantissa(CoreData_GetMaxMeasurementVoltage(), 1241, 2, &max_volt_significant, &max_volt_mantissa);
-		Common_GetSignificantAndMantissa(CoreData_GetDEResistance(), 1, 2, &resistance_significant, &resistance_mantissa);
-		Common_GetSignificantAndMantissa(CoreData_GetDECapacitance(), 1, 2, &capacitance_significant, &capacitance_mantissa);
+		Common_GetSignificantAndMantissa((uint32_t) CoreData_GetMeasurementFrequency(), 1000, 2, &freq_significant, &freq_mantissa);
+		Common_GetSignificantAndMantissa((uint32_t) CoreData_GetMinMeasurementVoltage(), 1241, 2, &min_volt_significant, &min_volt_mantissa);
+		Common_GetSignificantAndMantissa((uint32_t) CoreData_GetMaxMeasurementVoltage(), 1241, 2, &max_volt_significant, &max_volt_mantissa);
+		Common_GetSignificantAndMantissa(CoreData_GetDEResistance(), 1000, 2, &resistance_significant, &resistance_mantissa);
+		Common_GetSignificantAndMantissa(CoreData_GetDECapacitance(), 1000, 2, &capacitance_significant, &capacitance_mantissa);
 
 		// static top header
 		SSD1306_Fill(&ssd1306, SSD1306_COLOR_BLACK);

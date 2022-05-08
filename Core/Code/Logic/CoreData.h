@@ -35,11 +35,8 @@
 #define COREDATA_REG_MES_FREQ 10 ///< size: 2 bytes
 #define COREDATA_REG_DE_MODEL 12 ///< size: 1 byte
 
-#define COREDATA_REG_DE_RESISTANCE 127 ///< size: 2 bytes
-#define COREDATA_REG_DE_CAPACITANCE 129 ///< size: 2 bytes
-#define COREDATA_REG_DE_PHASE 131 ///< size: 2 bytes
-#define COREDATA_REG_DE_VOLTAGE_MAG 133 ///< size: 2 bytes
-#define COREDATA_REG_DE_CURRENT_MAG 135 ///< size: 2 bytes
+#define COREDATA_REG_DE_RESISTANCE 127 ///< size: 4 bytes
+#define COREDATA_REG_DE_CAPACITANCE 131 ///< size: 4 bytes
 
 #define COREDATA_REG_COMMAND COREDATA_SIZE - 5 ///< size: 1 byte command followed by 4 bytes of data
 
@@ -113,26 +110,14 @@ uint8_t CoreData_SetInitialDEModel(uint8_t model);
 uint8_t CoreData_GetDEModel();
 uint8_t *CoreData_GetDEModelReference();
 
-uint8_t CoreData_SetDEResistance(uint16_t resistance);
-uint8_t CoreData_SetInitialDEResistance(uint16_t resistance);
-uint16_t CoreData_GetDEResistance();
-uint16_t *CoreData_GetDEResistanceReference();
-uint8_t CoreData_SetDECapacitance(uint16_t capacitance);
-uint8_t CoreData_SetInitialDECapacitance(uint16_t capacitance);
-uint16_t CoreData_GetDECapacitance();
-uint16_t *CoreData_GetDECapacitanceReference();
-uint8_t CoreData_SetDEPhase(uint16_t phase);
-uint8_t CoreData_SetInitialDEPhase(uint16_t phase);
-uint16_t CoreData_GetDEPhase();
-uint16_t *CurrentMagnitude();
-uint8_t CoreData_SetDEVoltageMagnitude(uint16_t voltage);
-uint8_t CoreData_SetInitialDEVoltageMagnitude(uint16_t voltage);
-uint16_t CoreData_GetDEVoltageMagnitude();
-uint16_t *CoreData_GetDEVoltageMagnitudeReference();
-uint8_t CoreData_SetDECurrentMagnitude(uint16_t current);
-uint8_t CoreData_SetInitialDECurrentMagnitude(uint16_t current);
-uint16_t CoreData_GetDECurrentMagnitude();
-uint16_t *CoreData_GetDECurrentMagnitudeReference();
+uint8_t CoreData_SetDEResistance(uint32_t resistance);
+uint8_t CoreData_SetInitialDEResistance(uint32_t resistance);
+uint32_t CoreData_GetDEResistance();
+uint32_t *CoreData_GetDEResistanceReference();
+uint8_t CoreData_SetDECapacitance(uint32_t capacitance);
+uint8_t CoreData_SetInitialDECapacitance(uint32_t capacitance);
+uint32_t CoreData_GetDECapacitance();
+uint32_t *CoreData_GetDECapacitanceReference();
 
 void * __CoreData_GetDataReference(CoreData_RegisterTypeDef reg_type, uint8_t address);
 uint32_t *__CoreData_GetWordReference(CoreData_RegisterTypeDef reg_type, uint8_t address);
