@@ -91,7 +91,7 @@ const osThreadAttr_t mainThread_attributes = {
 osThreadId_t analogInHandle;
 const osThreadAttr_t analogIn_attributes = {
   .name = "analogIn",
-  .stack_size = 128 * 4,
+  .stack_size = 2048 * 4,
   .priority = (osPriority_t) osPriorityHigh2,
 };
 /* USER CODE BEGIN PV */

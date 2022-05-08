@@ -15,44 +15,18 @@
 
 #pragma once
 
-#include <math.h>
-
 #include "stm32h7xx_hal.h"
 
 #include "../config.h"
 
-#define ARM_MATH_CM7 // cortex m7 based MCU
-
-#include "../../Libs/CMSIS_DSP/arm_math.h"
-
-// to prevent the data being in dynamically allocated memory, we put it here
-typedef struct {
-	float32_t fft_in[ADC_FFT_SIZE]; ///< the input array for the FFT (converted ADC buffer)
-	float32_t fft_out[ADC_FFT_SIZE]; ///< the output of the FFT (complex numbers: real(0), imag(0), real(1), ...)
-	float32_t fft_mag[ADC_FFT_SIZE / 2]; ///< the magnitude, only real numbers, therefore half the output size
-	uint32_t fft_max_mag_idx; ///< the index of the biggest magnitude
-} AnaRP_FFTData_t;
-
-typedef struct {
-	float32_t dc_offset;
-	float32_t magnitude;
-	float32_t phase;
-	float32_t frequency;
-} AnaRP_FFTResults_t;
-
 typedef struct {
 	ADC_HandleTypeDef *hadc; ///< the ADC handle
 	uint16_t size; ///< size of the buffer
-	uint16_t buffer[ADC_FFT_SIZE]; ///< the buffer for the DAC
+	uint16_t buffer[ADC_SAMPLE_SIZE]; ///< the buffer for the DAC
 
 	uint32_t next_measurement; ///< time in milliseconds when the next measurement should take place
 
 	uint8_t process_data_flag; ///< a flag that is set to 1 if there is data to process
-
-	arm_rfft_fast_instance_f32 fft_inst; ///< The FFT instance
-
-	AnaRP_FFTData_t fft_data;
-	AnaRP_FFTResults_t fft_results;
 } AnaRP_t;
 
 AnaRP_t *__ADCList[3]; ///< A list that contains all ADC objects.
@@ -78,9 +52,9 @@ void AnaRP_ProcessData(AnaRP_t *dev);
 
 uint8_t AnaRP_IsReady(AnaRP_t *dev);
 
-uint8_t AnaRP_ResultsAvailable(AnaRP_t *dev);
+uint8_t AnaRP_FinishedReading(AnaRP_t *dev);
 
-AnaRP_FFTResults_t *AnaRP_GetResults(AnaRP_t *dev);
+void AnaRP_ResetState(AnaRP_t *dev);
 
 uint8_t __AnaRP_FindADC(ADC_HandleTypeDef *hadc, AnaRP_t **adc);
 

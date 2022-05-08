@@ -7,6 +7,8 @@ AnaRP_t analogData_temperature;
 void AnalogIn_StartThread(void *argument) {
 	AnalogIn_Parameter_t *params = (AnalogIn_Parameter_t *) argument;
 
+	DEEstModels_Initialize();
+
 	AnaRP_Initialize(&analogData_voltage, params->hadc_1);
 	AnaRP_Initialize(&analogData_current, params->hadc_2);
 	//AnaRP_Initialize(&analogData_temperature, params->hadc_3);
@@ -15,11 +17,12 @@ void AnalogIn_StartThread(void *argument) {
 
 	while(1) {
 		// attempt to process data
-		AnaRP_ProcessData(&analogData_voltage);
-		AnaRP_ProcessData(&analogData_current);
+		if (AnaRP_FinishedReading(&analogData_voltage) && AnaRP_FinishedReading(&analogData_current)) {
+			DEEstHandler_RunModel(&analogData_voltage, &analogData_current);
 
-		if (AnaRP_ResultsAvailable(&analogData_voltage) && AnaRP_ResultsAvailable(&analogData_current)) {
-			DEModel_ProcessData(AnaRP_GetResults(&analogData_voltage), AnaRP_GetResults(&analogData_current));
+			// after the processing of the data, the state is reset
+			AnaRP_ResetState(&analogData_voltage);
+			AnaRP_ResetState(&analogData_current);
 		}
 
 		// only restart a new ADC read if both ADCs are ready
@@ -28,8 +31,6 @@ void AnalogIn_StartThread(void *argument) {
 			// conversion is triggered; this is important to have both conversion
 			// perfectly in sync
 			HAL_TIM_Base_Stop(params->htim);
-
-			osDelay(1);
 
 			// start the HAL conversion; it starts on the first timer tick
 			AnaRP_StartDMA(&analogData_voltage);

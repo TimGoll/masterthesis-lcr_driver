@@ -16,21 +16,18 @@ void Display_StartThread(void *argument) {
 
 	SSD1306_Initialize(&ssd1306, hi2c1, 0x3C, 128, 64, 0, 0, 0, 0);
 
+	uint16_t freq_significant, freq_mantissa,
+		min_volt_significant, min_volt_mantissa,
+		max_volt_significant, max_volt_mantissa,
+		resistance_significant, resistance_mantissa,
+		capacitance_significant, capacitance_mantissa;
+
 	while(1) {
 		// prepare values
-		uint16_t freq_significant, freq_mantissa;
 		Common_GetSignificantAndMantissa(LCRData_GetMeasurementFrequency(), 1000, 2, &freq_significant, &freq_mantissa);
-
-		uint16_t min_volt_significant, min_volt_mantissa;
 		Common_GetSignificantAndMantissa(LCRData_GetMinMeasurementVoltage(), 1241, 2, &min_volt_significant, &min_volt_mantissa);
-
-		uint16_t max_volt_significant, max_volt_mantissa;
 		Common_GetSignificantAndMantissa(LCRData_GetMaxMeasurementVoltage(), 1241, 2, &max_volt_significant, &max_volt_mantissa);
-
-		uint16_t resistance_significant, resistance_mantissa;
 		Common_GetSignificantAndMantissa(LCRData_GetDEResistance(), 1, 2, &resistance_significant, &resistance_mantissa);
-
-		uint16_t capacitance_significant, capacitance_mantissa;
 		Common_GetSignificantAndMantissa(LCRData_GetDECapacitance(), 1, 2, &capacitance_significant, &capacitance_mantissa);
 
 		// static top header

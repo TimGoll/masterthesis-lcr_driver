@@ -3,7 +3,8 @@
 #include "cmsis_os.h"
 
 #include "../Logic/AnaRP.h"
-#include "../Logic/DEModel.h"
+#include "../Logic/DEEstHandler.h"
+#include "../Logic/DEEstModels.h"
 
 typedef struct {
 	ADC_HandleTypeDef *hadc_1;

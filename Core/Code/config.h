@@ -10,6 +10,7 @@
 // ANALOG IN PROCESSING
 #define ADC_SAMPLE_FREQ 1280000 // this is the resulting frequency, hardware oversampling is ignored
 #define ADC_PROCESS_FREQ 100 // process the data 100 times per second
-#define ADC_FFT_SIZE 256
+#define ADC_SAMPLE_SIZE 256
+#define ADC_UAMPS_PER_VOLT 91 //TODO refine
 
-#define DEMODEL_UAMPS_PER_VOLT 91 //TODO refine
+#define DEESTIMATION_MODEL_COUNT 3
