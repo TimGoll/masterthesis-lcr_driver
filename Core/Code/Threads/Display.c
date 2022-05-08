@@ -43,8 +43,9 @@ void Display_StartThread(void *argument) {
 		SSD1306_DrawString(&ssd1306, VERSION, SSD1306_font_6x8, SSD1306_COLOR_WHITE);
 
 		// estimation procedure mode
+		sprintf(buffer, "Mode %d - %s", LCRData_GetDEModel(), DEEstHandler_GetModelName());
 		SSD1306_SetCursor(&ssd1306, 0, 16);
-		SSD1306_DrawString(&ssd1306, "Mode 0 - FFT RC Model", SSD1306_font_6x8, SSD1306_COLOR_WHITE);
+		SSD1306_DrawString(&ssd1306, buffer, SSD1306_font_6x8, SSD1306_COLOR_WHITE);
 
 		// divider line
 		SSD1306_DrawLine(&ssd1306, 0, 25, 127, 25, SSD1306_COLOR_WHITE);
