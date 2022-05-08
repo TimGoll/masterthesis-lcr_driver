@@ -27,7 +27,7 @@ void DEEstHandler_Register(char* name, void (*init)(), void (*process)(AnaRP_t *
 
 void DEEstHandler_RunModel(AnaRP_t *voltage_data, AnaRP_t *current_data) {
 	// cache the model ID to make sure it is not changed while we try to access it
-	uint8_t selected_model = LCRData_GetDEModel();
+	uint8_t selected_model = CoreData_GetDEModel();
 
 	if (selected_model >= __DEEstListSize) {
 		return;
@@ -38,7 +38,7 @@ void DEEstHandler_RunModel(AnaRP_t *voltage_data, AnaRP_t *current_data) {
 
 char *DEEstHandler_GetModelName() {
 	// cache the model ID to make sure it is not changed while we try to access it
-	uint8_t selected_model = LCRData_GetDEModel();
+	uint8_t selected_model = CoreData_GetDEModel();
 
 	if (selected_model >= __DEEstListSize) {
 		return fallback_name;

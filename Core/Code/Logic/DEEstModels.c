@@ -30,6 +30,6 @@ void DEEstModels_FFTRCModel_Process(AnaRP_t *voltage_data, AnaRP_t *current_data
 	float32_t capacitance = 1000000000000.0 / (-1 * impedance_imag * 2 * CONF_PI * fft_voltage.results.frequency); // pF
 	float32_t resistance = -1 * impedance_real; // Ohm
 
-	LCRData_SetDEResistance((uint16_t) resistance);
-	LCRData_SetDECapacitance((uint16_t) capacitance);
+	CoreData_SetDEResistance((uint16_t) resistance);
+	CoreData_SetDECapacitance((uint16_t) capacitance);
 }

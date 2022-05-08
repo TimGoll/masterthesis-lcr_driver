@@ -5,13 +5,13 @@ uint8_t __LCRSlaveListSize = 0;
 
 void I2CSlave_Initialize(I2CSlave_t *dev, I2C_HandleTypeDef *i2cHandle, GPIO_TypeDef *gpio_bank, uint16_t gpio_pin) {
 	dev->i2cHandle = i2cHandle;
-	dev->start_address = LCRData_GetStartingMemoryAddressReference();
-	dev->last_address = LCRData_GetMemoryAddressReference();
+	dev->start_address = CoreData_GetStartingMemoryAddressReference();
+	dev->last_address = CoreData_GetMemoryAddressReference();
 	dev->state = LCR_SLAVE_READY;
 	dev->gpio_bank = gpio_bank;
 	dev->gpio_pin = gpio_pin;
 	dev->__found_address = 0;
-	dev->memory = LCRData_GetDataArrayReference();
+	dev->memory = CoreData_GetDataArrayReference();
 
 	// add slave to list of slaves
 	__LCRSlaveList[__LCRSlaveListSize] = dev;

@@ -4,9 +4,8 @@
 #include <string.h>
 
 #include "AnaRP.h"
-#include "LCRData.h"
-
 #include "../config.h"
+#include "CoreData.h"
 
 typedef struct {
 	char name[16];

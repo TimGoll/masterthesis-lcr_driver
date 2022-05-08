@@ -14,11 +14,10 @@
 
 #pragma once
 
-#include "../Logic/LCRData.h"
-
 #include "stm32h7xx_hal.h" // Needed for I2C
 #include <stdio.h>
 #include <string.h>
+#include "CoreData.h"
 
 /**
  * @brief An enum that describes the current availability state of the LCR slave.

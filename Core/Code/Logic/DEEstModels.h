@@ -10,7 +10,7 @@
 #include "../../Libs/CMSIS_DSP/arm_math.h"
 #include "../../Libs/FFT/FFT.h"
 
-#include "LCRData.h"
+#include "CoreData.h"
 
 void DEEstModels_Initialize();
 

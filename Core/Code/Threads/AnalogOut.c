@@ -19,13 +19,13 @@ void AnalogOut_StartThread(void *argument) {
 	SineGen_Initialize(&sineGen_measurement, params->tmr, params->hdac_1, DAC_CHANNEL_1);
 
 	// generate the sine wave with the current parameters
-	SineGen_SetupSine(&sineGen_measurement, LCRData_GetMinMeasurementVoltage(), LCRData_GetMaxMeasurementVoltage(), LCRData_GetMeasurementFrequency());
+	SineGen_SetupSine(&sineGen_measurement, CoreData_GetMinMeasurementVoltage(), CoreData_GetMaxMeasurementVoltage(), CoreData_GetMeasurementFrequency());
 
 	// output the sine wave
 	SineGen_OutputSine(&sineGen_measurement);
 
 	while(1) {
-		uint32_t resistance = LCRData_GetDEResistance();
+		uint32_t resistance = CoreData_GetDEResistance();
 		float voltage = ((float) resistance) / 4294967295.0f * 3.3f;
 
 		MCP4725_SetVoltage(&extDAC_resistance, voltage, MCP4725_DAC_ONLY);

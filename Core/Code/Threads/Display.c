@@ -24,11 +24,11 @@ void Display_StartThread(void *argument) {
 
 	while(1) {
 		// prepare values
-		Common_GetSignificantAndMantissa(LCRData_GetMeasurementFrequency(), 1000, 2, &freq_significant, &freq_mantissa);
-		Common_GetSignificantAndMantissa(LCRData_GetMinMeasurementVoltage(), 1241, 2, &min_volt_significant, &min_volt_mantissa);
-		Common_GetSignificantAndMantissa(LCRData_GetMaxMeasurementVoltage(), 1241, 2, &max_volt_significant, &max_volt_mantissa);
-		Common_GetSignificantAndMantissa(LCRData_GetDEResistance(), 1, 2, &resistance_significant, &resistance_mantissa);
-		Common_GetSignificantAndMantissa(LCRData_GetDECapacitance(), 1, 2, &capacitance_significant, &capacitance_mantissa);
+		Common_GetSignificantAndMantissa(CoreData_GetMeasurementFrequency(), 1000, 2, &freq_significant, &freq_mantissa);
+		Common_GetSignificantAndMantissa(CoreData_GetMinMeasurementVoltage(), 1241, 2, &min_volt_significant, &min_volt_mantissa);
+		Common_GetSignificantAndMantissa(CoreData_GetMaxMeasurementVoltage(), 1241, 2, &max_volt_significant, &max_volt_mantissa);
+		Common_GetSignificantAndMantissa(CoreData_GetDEResistance(), 1, 2, &resistance_significant, &resistance_mantissa);
+		Common_GetSignificantAndMantissa(CoreData_GetDECapacitance(), 1, 2, &capacitance_significant, &capacitance_mantissa);
 
 		// static top header
 		SSD1306_Fill(&ssd1306, SSD1306_COLOR_BLACK);
@@ -43,7 +43,7 @@ void Display_StartThread(void *argument) {
 		SSD1306_DrawString(&ssd1306, VERSION, SSD1306_font_6x8, SSD1306_COLOR_WHITE);
 
 		// estimation procedure mode
-		sprintf(buffer, "Mode %d - %s", LCRData_GetDEModel(), DEEstHandler_GetModelName());
+		sprintf(buffer, "Mode %d - %s", CoreData_GetDEModel(), DEEstHandler_GetModelName());
 		SSD1306_SetCursor(&ssd1306, 0, 16);
 		SSD1306_DrawString(&ssd1306, buffer, SSD1306_font_6x8, SSD1306_COLOR_WHITE);
 

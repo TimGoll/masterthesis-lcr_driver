@@ -12,6 +12,6 @@
 #include "../config.h"
 #include "../bitmaps.h"
 
-#include "../Logic/LCRData.h"
+#include "../Logic/CoreData.h"
 
 void Display_StartThread(void *argument);
