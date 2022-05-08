@@ -7,6 +7,9 @@
 // ANALOG OUT
 #define DAC_SAMPLE_FREQ 1000000 // STM H7 has 1MSample/s
 
+#define DAC_RESISTANCE_LOWER_LIMIT 1000000 // mOhm = 1kOhm
+#define DAC_RESISTANCE_UPPER_LIMIT 100000000 // mOhm = 100kOhm
+
 // ANALOG IN PROCESSING
 #define ADC_SAMPLE_FREQ 1280000 // this is the resulting frequency, hardware oversampling is ignored
 #define ADC_PROCESS_FREQ 100 // process the data 100 times per second

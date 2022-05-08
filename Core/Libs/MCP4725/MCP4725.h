@@ -16,8 +16,6 @@
 
 #include "stm32h7xx_hal.h" // Needed for I2C
 
-#define MCP4725_MAX_VOLTAGE 3.3f ///< The maximum voltage that can be outputted by the DAC that is used to calculate the transmitted value.
-
 /**
  * @brief An enum containing the different modes for the output resistance.
  */
@@ -44,8 +42,7 @@ typedef struct {
 	HAL_StatusTypeDef i2cState; ///< Store the state of the i2c state here
 	uint16_t address; ///< The address of the specific i2c device
 	MCP4725_Mode_t mode; ///< The current shutdown mode
-	float output_voltage; ///< The output voltage in volt
-	uint16_t output_voltage_int; ///< The output voltage as an integer
+	uint16_t output_voltage; ///< The output voltage as an integer
 } MCP4725_t;
 
 /**
@@ -79,7 +76,7 @@ HAL_StatusTypeDef MCP4725_SetMode(MCP4725_t *dev, MCP4725_Mode_t mode, MCP4725_D
  *
  * @retval HAL_StatusTypeDef HAL Status
  */
-HAL_StatusTypeDef MCP4725_SetVoltage(MCP4725_t *dev, float voltage, MCP4725_DataMode_t eeprom_or_dac);
+HAL_StatusTypeDef MCP4725_SetVoltage(MCP4725_t *dev, uint16_t voltage, MCP4725_DataMode_t eeprom_or_dac);
 
 /**
  * Reads the current data from the chip and updates the sensor data object.

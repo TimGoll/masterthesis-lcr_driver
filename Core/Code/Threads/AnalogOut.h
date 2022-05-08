@@ -3,8 +3,10 @@
 #include "cmsis_os.h"
 
 #include "../Logic/SineGen.h"
-#include "../Libs/MCP4725/MCP4725.h"
 #include "../Logic/CoreData.h"
+
+#include "../Libs/MCP4725/MCP4725.h"
+#include "../Libs/Common/Common.h"
 
 #define MCP4725_ADDRESS_RESISTANCE 0x62
 

@@ -25,10 +25,11 @@ void AnalogOut_StartThread(void *argument) {
 	SineGen_OutputSine(&sineGen_measurement);
 
 	while(1) {
-		uint32_t resistance = CoreData_GetDEResistance();
-		float voltage = ((float) resistance) / 4294967295.0f * 3.3f;
+		uint32_t test = CoreData_GetDEResistance();
 
-		MCP4725_SetVoltage(&extDAC_resistance, voltage, MCP4725_DAC_ONLY);
+		uint16_t resistance = (uint16_t) Common_Map(CoreData_GetDEResistance(), DAC_RESISTANCE_LOWER_LIMIT, DAC_RESISTANCE_UPPER_LIMIT, 0, 4095);
+
+		MCP4725_SetVoltage(&extDAC_resistance, resistance, MCP4725_DAC_ONLY);
 
 		osDelay(100); //update analog output 10 times per second
 	}

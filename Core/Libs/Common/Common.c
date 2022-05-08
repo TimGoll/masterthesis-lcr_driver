@@ -20,3 +20,8 @@ void Common_GetSignificantAndMantissa(uint32_t number, uint16_t base, uint8_t di
 	// add half base for rounding
 	*mantissa = (remainder * Common_Power(10, digits) + base / 2) / base;
 }
+
+uint32_t Common_Map(uint32_t in, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max) {
+	return (uint32_t) (((uint64_t) in - (uint64_t) in_min) * ((uint64_t) out_max - (uint64_t) out_min)
+			/ ((uint64_t) in_max - (uint64_t) in_min) + (uint64_t) out_min);
+}
