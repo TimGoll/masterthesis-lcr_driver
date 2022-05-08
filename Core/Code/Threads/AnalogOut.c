@@ -10,7 +10,7 @@ void AnalogOut_StartThread(void *argument) {
 	AnalogOut_Parameter_t *params = (AnalogOut_Parameter_t *) argument;
 
 	// initialize the analog output that sets the analog out
-	MCP4725_Initialize(&extDAC_resistance, params->i2c_handle, MCP4725_ADDRESS_RESISTANCE);
+	MCP4725_Initialize(&extDAC_resistance, params->i2c_handle, DAC_I2C_ADDRESS_RESISTANCE);
 
 	// pause this thread for a moment so that the lcr data thread is initialized first
 	osDelay(10);
@@ -25,8 +25,6 @@ void AnalogOut_StartThread(void *argument) {
 	SineGen_OutputSine(&sineGen_measurement);
 
 	while(1) {
-		uint32_t test = CoreData_GetDEResistance();
-
 		uint16_t resistance = (uint16_t) Common_Map(CoreData_GetDEResistance(), DAC_RESISTANCE_LOWER_LIMIT, DAC_RESISTANCE_UPPER_LIMIT, 0, 4095);
 
 		MCP4725_SetVoltage(&extDAC_resistance, resistance, MCP4725_DAC_ONLY);

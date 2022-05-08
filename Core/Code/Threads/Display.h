@@ -13,5 +13,6 @@
 #include "../bitmaps.h"
 
 #include "../Logic/CoreData.h"
+#include "../Logic/DEEstHandler.h"
 
 void Display_StartThread(void *argument);

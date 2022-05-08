@@ -14,7 +14,7 @@ void Display_StartThread(void *argument) {
 
 	SSD1606Font_AddSpecialChar(&SSD1306_font_6x8, char_omega); // omega as \1
 
-	SSD1306_Initialize(&ssd1306, hi2c1, 0x3C, 128, 64, 0, 0, 0, 0);
+	SSD1306_Initialize(&ssd1306, hi2c1, DISPLAY_I2C_ADDRESS, 128, 64, 0, 0, 0, 0);
 
 	uint16_t freq_significant, freq_mantissa,
 		min_volt_significant, min_volt_mantissa,
