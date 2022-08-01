@@ -61,6 +61,12 @@ void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c) {
 		return;
 	}
 
+	// if slave was busy sending data, last increased address should be decreased again
+	// because there is always one more interrupt call than there are bytes transmitted
+	if (dev->state == LCR_SLAVE_BUSY_TX) {
+		(*dev->last_address)--;
+	}
+
 	// disable status LED once transmission is done
 	HAL_GPIO_WritePin(dev->gpio_bank, dev->gpio_pin, GPIO_PIN_RESET);
 
@@ -117,7 +123,7 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *hi2c) {
 	}
 
 	if (!dev->__found_address) {
-		// if the address wasn't yet set, the previously received byte is the address
+		// if the address wasn't set yet, the previously received byte is the address
 		// therefore the flag has to be set, while also copying the value in the
 		// starting address register
 		dev->__found_address = 1;
