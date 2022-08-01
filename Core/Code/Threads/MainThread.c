@@ -11,6 +11,7 @@ void MainThread_StartThread(void *argument) {
 	CoreData_SetInitialMinMeasurementVoltage(124); // 0.1V
 	CoreData_SetInitialMaxMeasurementVoltage(3970); // 3.2V
 	CoreData_SetInitialMeasurementFrequency(10000); // 10kHz
+	CoreData_SetInitialDEModel(2); // 2
 
 	// Set this to true so that initializing the data always sets it to true
 	// in the data array. This is only used to detect if the storage in the

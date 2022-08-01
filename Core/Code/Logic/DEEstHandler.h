@@ -12,9 +12,10 @@ typedef struct {
 	void (*process)(AnaRP_t *voltage_data, AnaRP_t *current_data);
 } DEEstHandler_Model_t;
 
-DEEstHandler_Model_t __DEEstList[DEESTIMATION_MODEL_COUNT]; ///< a list that contains all DE estimation models
+DEEstHandler_Model_t __DEEstList[DEESTIMATION_MODEL_MAX_COUNT]; ///< a list that contains all DE estimation models
 uint8_t __DEEstListSize; ///< the amount of DE estimation models
 uint8_t __DEEstSelected; ///< the id of the selected model
+uint32_t __lastModeChangePress; ///< The last time the mode change button was pressed, timer used to debounce
 
 void DEEstHandler_Register(char* name, void (*init)(), void (*process)(AnaRP_t *voltage_data, AnaRP_t *current_data));
 

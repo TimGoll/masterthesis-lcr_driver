@@ -15,5 +15,10 @@
 void DEEstModels_Initialize();
 
 void DEEstModels_FFTRCModel_Init();
-
 void DEEstModels_FFTRCModel_Process(AnaRP_t *voltage_data, AnaRP_t *current_data);
+
+void DEEstModels_IQRCModel_Init();
+void DEEstModels_IQRCModel_Process(AnaRP_t *voltage_data, AnaRP_t *current_data);
+
+void DEEstModels_RizzelloModel_Init();
+void DEEstModels_RizzelloModel_Process(AnaRP_t *voltage_data, AnaRP_t *current_data);

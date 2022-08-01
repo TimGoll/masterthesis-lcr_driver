@@ -40,3 +40,6 @@ omega
 nyquist
 femto
 fallback
+rizzello
+debounce
+ms

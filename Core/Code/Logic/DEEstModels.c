@@ -1,7 +1,9 @@
 #include "DEEstModels.h"
 
 void DEEstModels_Initialize() {
-	DEEstHandler_Register("FFT RC Model", &DEEstModels_FFTRCModel_Init, &DEEstModels_FFTRCModel_Process);
+	DEEstHandler_Register("FFT RC", &DEEstModels_FFTRCModel_Init, &DEEstModels_FFTRCModel_Process);
+	DEEstHandler_Register("IQ RC", &DEEstModels_IQRCModel_Init, &DEEstModels_IQRCModel_Process);
+	DEEstHandler_Register("Rizzello", &DEEstModels_RizzelloModel_Init, &DEEstModels_RizzelloModel_Process);
 }
 
 // ESTIMATION MODEL FUNCTIONS HERE
@@ -28,8 +30,24 @@ void DEEstModels_FFTRCModel_Process(AnaRP_t *voltage_data, AnaRP_t *current_data
 	float32_t impedance_imag = impedance * sinf(phase);
 
 	float32_t capacitance = 1000000000000000.0 / (-1 * impedance_imag * 2 * CONF_PI * fft_voltage.results.frequency); // fF
-	float32_t resistance = -1 * impedance_real * 1000; // mOhm
+	float32_t resistance = -1 * impedance_real * 1000 - FIXED_DE_SERIES_RESISTANCE * 1000; // mOhm
 
 	CoreData_SetDEResistance((uint32_t) resistance);
 	CoreData_SetDECapacitance((uint32_t) capacitance);
+}
+
+void DEEstModels_IQRCModel_Init() {
+
+}
+
+void DEEstModels_IQRCModel_Process(AnaRP_t *voltage_data, AnaRP_t *current_data) {
+
+}
+
+void DEEstModels_RizzelloModel_Init() {
+
+}
+
+void DEEstModels_RizzelloModel_Process(AnaRP_t *voltage_data, AnaRP_t *current_data) {
+
 }

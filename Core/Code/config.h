@@ -4,6 +4,12 @@
 
 #define CONF_PI 3.14159265358979323846f
 
+// GENERAL
+#define BUTTON_DEBOUNCE_TIME 50 // ms
+
+// HARWARE
+#define FIXED_DE_SERIES_RESISTANCE 1003 // Ohm
+
 // ANALOG OUT
 #define DAC_SAMPLE_FREQ 1000000 // STM H7 has 1MSample/s
 
@@ -16,10 +22,10 @@
 #define ADC_SAMPLE_FREQ 1280000 // this is the resulting frequency, hardware oversampling is ignored
 #define ADC_PROCESS_FREQ 100 // process the data 100 times per second
 #define ADC_SAMPLE_SIZE 256
-#define ADC_UAMPS_PER_VOLT 100.05993264732983f
+#define ADC_UAMPS_PER_VOLT 107.153733842f
 
 // DE ESTIMATION MODELS
-#define DEESTIMATION_MODEL_COUNT 3
+#define DEESTIMATION_MODEL_MAX_COUNT 3
 
 // DISPLAY
 #define DISPLAY_I2C_ADDRESS 0x3C
